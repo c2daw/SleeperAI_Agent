@@ -1,5 +1,5 @@
 import streamlit as st
-from google import genai  # <--- NEW 2026 SDK IMPORT
+import google.generativeai as genai
 from data_utils import get_all_players, get_league_data, get_league_context, get_full_roster_string, get_draft_capital
 
 # --- 1. SETUP ---
@@ -10,8 +10,8 @@ if "GEMINI_API_KEY" not in st.secrets:
     st.error("Missing GEMINI_API_KEY. Go to Streamlit Settings > Secrets and add it.")
     st.stop()
 
-# Initialize the NEW Client
-client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
+# Configure the generative AI library
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
 # --- 2. DATA LOADING ---
 players_db = get_all_players()
@@ -52,13 +52,12 @@ if prompt := st.chat_input("Ask the Council..."):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # NEW 2026 SYNTAX: client.models.generate_content
     try:
-        response = client.models.generate_content(
-            model="models/gemini-1.5-flash",  # <--- Explicitly pathing to the model
-            contents=prompt,
-            config={'system_instruction': system_instruction}
+        model = genai.GenerativeModel(
+            model_name='gemini-1.5-flash',
+            system_instruction=system_instruction
         )
+        response = model.generate_content(prompt)
         ai_text = response.text
     except Exception as e:
         ai_text = f"The Council is having trouble connecting: {str(e)}"
