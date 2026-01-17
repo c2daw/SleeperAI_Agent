@@ -1,17 +1,16 @@
 import streamlit as st
-from google import genai
-from data_utils import get_all_players, get_league_data, get_league_context, get_full_roster_string, \
-    get_draft_capital
+from google import genai  # <--- NEW 2026 SDK IMPORT
+from data_utils import get_all_players, get_league_data, get_league_context, get_full_roster_string, get_draft_capital
 
-# --- 1. SETTINGS & AUTH ---
+# --- 1. SETUP ---
 st.set_page_config(page_title="Dynasty AI Agent", layout="wide")
 
-# Check for the key before doing anything
+# Verify Secrets exist
 if "GEMINI_API_KEY" not in st.secrets:
-    st.error("Missing GEMINI_API_KEY in Streamlit Secrets!")
+    st.error("Missing GEMINI_API_KEY. Go to Streamlit Settings > Secrets and add it.")
     st.stop()
 
-# Initialize the new 2026 Client
+# Initialize the NEW Client
 client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
 
 # --- 2. DATA LOADING ---
@@ -30,13 +29,12 @@ status, rank, user_roster = get_league_context(rosters, selected_user_id)
 roster_str = get_full_roster_string(user_roster, players_db)
 picks_str = get_draft_capital(user_roster['roster_id'], traded_picks)
 
-# Construction of the AI's "Brain"
 system_instruction = f"""
-You are "The League Council Advisor." 
+You are "The League Council Advisor." It is the 2026 season.
 Manager: {user_map[selected_user_id]} | Status: {status} (Rank {rank}/10)
 Roster: {roster_str}
 Future Picks: {picks_str}
-Rules: Be unbiased. Advise on value-positive trades.
+Strategy: Advisor {status} on value-positive trades.
 """
 
 # --- 4. CHAT INTERFACE ---
@@ -54,14 +52,16 @@ if prompt := st.chat_input("Ask the Council..."):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Modern 2026 generate_content call
-    response = client.models.generate_content(
-        model="gemini-1.5-flash",
-        contents=prompt,
-        config={'system_instruction': system_instruction}
-    )
-
-    ai_text = response.text
+    # NEW 2026 SYNTAX: client.models.generate_content
+    try:
+        response = client.models.generate_content(
+            model="gemini-1.5-flash",
+            contents=prompt,
+            config={'system_instruction': system_instruction}
+        )
+        ai_text = response.text
+    except Exception as e:
+        ai_text = f"The Council is having trouble connecting: {str(e)}"
 
     with st.chat_message("assistant"):
         st.markdown(ai_text)
