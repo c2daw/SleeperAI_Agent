@@ -55,7 +55,7 @@ if prompt := st.chat_input("Ask the Council..."):
     # NEW 2026 SYNTAX: client.models.generate_content
     try:
         response = client.models.generate_content(
-            model="gemini-1.5-flash",
+            model="models/gemini-1.5-flash",  # <--- Explicitly pathing to the model
             contents=prompt,
             config={'system_instruction': system_instruction}
         )
