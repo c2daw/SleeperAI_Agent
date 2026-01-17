@@ -14,8 +14,40 @@ client = genai.Client(
     http_options=types.HttpOptions(api_version='v1')
 )
 
+# --- DATA LOADING ---
+players_db = get_all_players()
+users, rosters, traded_picks = get_league_data()
+user_map = {u["user_id"]: u["display_name"] for u in users}
 
-# --- (Keep Data Loading & Sidebar Logic the same) ---
+# --- SIDEBAR ---
+selected_user_id = st.sidebar.selectbox("Login as Manager:", options=list(user_map.keys()),
+                                        format_func=lambda x: user_map[x])
+
+status, rank, user_roster = get_league_context(rosters, selected_user_id)
+roster_str = get_full_roster_string(user_roster, players_db)
+picks_str = get_draft_capital(user_roster['roster_id'], traded_picks)
+
+with st.sidebar:
+    st.metric("Max PF Ranking", f"{rank}/10", delta=status)
+    st.write(f"**Persona Active:** The Council Advisor ({status})")
+
+# --- AI PERSONA ---
+system_instruction = f"""
+You are "The League Council Advisor." 
+Manager: {user_map[selected_user_id]} | Current Status: {status}
+ROSTER:
+{roster_str}
+DRAFT CAPITAL (2026-2028):
+{picks_str}
+
+RULES:
+- Be unbiased. Analyze for competitive health.
+- For {status}s: Suggest moves that align with their Max PF rank.
+- NO FLEECING: Promote fair, value-positive trades.
+"""
+
+# --- CHAT ---
+st.title("⚖️ League Council Advisor")
 
 # --- ROBUST AI CALL WITH RETRIES ---
 @retry(
