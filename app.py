@@ -49,7 +49,7 @@ if prompt := st.chat_input("Ex: Should I trade my 2027 1st for a veteran WR?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"): st.markdown(prompt)
 
-    model = genai.GenerativeModel('gemini-1.5-flash', system_instruction=system_instruction)
+    model = genai.GenerativeModel('models/gemini-1.5-flash', system_instruction=system_instruction)
     ai_response = model.generate_content(prompt).text
 
     with st.chat_message("assistant"): st.markdown(ai_response)
