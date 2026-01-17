@@ -1,5 +1,8 @@
 import streamlit as st
 import requests
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
 
 LEAGUE_ID = "1217813257868283904"
 
@@ -37,6 +40,42 @@ def generate_scouting_pdf(name, status, rank, roster, picks):
     c = canvas.Canvas(buffer)
     c.drawString(100, 750, f"Scouting Report: {name}")
     c.drawString(100, 730, f"Status: {status} | Rank: {rank}")
+    c.showPage()
+    c.save()
+    buffer.seek(0)
+    return buffer
+
+def generate_scouting_pdf(name, status, rank, roster, picks):
+    buffer = BytesIO()
+    c = canvas.Canvas(buffer, pagesize=letter)
+
+    # Header
+    c.setFont("Helvetica-Bold", 16)
+    c.drawString(100, 750, f"2026 Dynasty Scouting Report: {name}")
+
+    # Sub-header
+    c.setFont("Helvetica", 12)
+    c.drawString(100, 730, f"Max PF Rank: {rank} / 10 | Status: {status}")
+    c.line(100, 720, 500, 720)
+
+    # Roster Section
+    c.setFont("Helvetica-Bold", 14)
+    c.drawString(100, 690, "Roster Assets:")
+    c.setFont("Helvetica", 10)
+
+    # Draw roster (simple wrap logic)
+    y = 670
+    for line in roster.split('\n')[:25]:  # Limit to 25 players for page 1
+        c.drawString(110, y, line)
+        y -= 15
+
+    # Picks Section
+    y -= 20
+    c.setFont("Helvetica-Bold", 14)
+    c.drawString(100, y, "Draft Capital (2026-2028):")
+    c.setFont("Helvetica", 10)
+    c.drawString(110, y - 20, picks)
+
     c.showPage()
     c.save()
     buffer.seek(0)

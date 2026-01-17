@@ -41,11 +41,26 @@ picks_str = data_utils.get_draft_capital(user_roster['roster_id'], traded_picks)
 
 with st.sidebar:
     st.metric("Max PF Rank", f"{rank}/10", delta=status)
-    if st.button("📄 Generate PDF"):
+    st.divider()
+
+    if st.button("📄 Generate Scouting Report"):
+        # We import here to keep the app boot-up fast
         from data_utils import generate_scouting_pdf
 
-        pdf = generate_scouting_pdf(user_map[selected_id], status, rank, roster_str, picks_str)
-        st.download_button("💾 Download", pdf, f"{user_map[selected_id]}_report.pdf")
+        pdf_data = generate_scouting_pdf(
+            user_map[selected_user_id],
+            status,
+            rank,
+            roster_str,
+            picks_str
+        )
+
+        st.download_button(
+            label="💾 Download PDF Report",
+            data=pdf_data,
+            file_name=f"{user_map[selected_user_id]}_Scouting.pdf",
+            mime="application/pdf"
+        )
 
 # --- 5. CHAT LOGIC ---
 st.title("⚖️ League Council Advisor")
