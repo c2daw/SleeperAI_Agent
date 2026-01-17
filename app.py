@@ -1,5 +1,5 @@
 import streamlit as st
-import google.generativeai as genai
+import google as genai
 from data_utils import get_all_players, get_league_data, get_league_context, get_full_roster_string, get_draft_capital
 
 # --- 1. SETUP ---
