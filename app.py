@@ -15,7 +15,7 @@ except ImportError:
     st.stop()
 
 # --- 3. APP CONFIG & AI CLIENT ---
-st.set_page_config(page_title="Dynasty Council", layout="wide")
+st.set_page_config(page_title="Dynasty Adviser", layout="wide")
 
 if "GEMINI_API_KEY" not in st.secrets:
     st.error("Add your GEMINI_API_KEY to the Streamlit Dashboard Secrets.")
@@ -24,7 +24,7 @@ if "GEMINI_API_KEY" not in st.secrets:
 # Force v1 Stable version to avoid 404/429 routing issues
 client = genai.Client(
     api_key=st.secrets["GEMINI_API_KEY"],
-    http_options=types.HttpOptions(api_version='v1')
+    http_options=types.HttpOptions(api_version='v1beta')
 )
 
 # --- 4. DATA LOADING ---
@@ -63,12 +63,12 @@ with st.sidebar:
         )
 
 # --- 5. CHAT LOGIC ---
-st.title("⚖️ League Council Advisor")
+st.title("⚖️ Dynasty League Advisor")
 
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]): st.markdown(msg["content"])
 
-if prompt := st.chat_input("Ask the council..."):
+if prompt := st.chat_input("Ask the adviser..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
@@ -92,13 +92,16 @@ if prompt := st.chat_input("Ask the council..."):
             response = client.models.generate_content(
                 model="gemini-2.0-flash",
                 contents=prompt,
-                config={'system_instruction': system_instr}
+                config=types.GenerateContentConfig(  # Use the explicit Type
+                    system_instruction=system_instr,
+                    temperature=0.7
+                )
             )
             ai_text = response.text
             placeholder.markdown(ai_text)
             st.session_state.messages.append({"role": "assistant", "content": ai_text})
         except Exception as e:
             if "429" in str(e):
-                placeholder.error("The Council is busy. Please wait 10 seconds (Quota Hit).")
+                placeholder.error("The Adviser is busy. Please wait 10 seconds (Quota Hit).")
             else:
                 placeholder.error(f"Error: {e}")

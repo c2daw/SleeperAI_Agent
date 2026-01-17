@@ -28,11 +28,10 @@ def get_full_roster_string(roster, db):
     ids = roster.get("players", [])
     return "\n".join([f"- {db.get(i,{}).get('full_name','?')} ({db.get(i,{}).get('position','?')})" for i in ids])
 
-
 def get_draft_capital(roster_id, traded_picks):
     # 1. Start with the "Standard" picks (assuming everyone keeps their own)
     years = [2026, 2027, 2028]
-    rounds = [1, 2, 3]
+    rounds = [1, 2, 3, 4, 5, 6]
 
     # Create a list of picks the user ORIGINALLY owned
     my_picks = []
