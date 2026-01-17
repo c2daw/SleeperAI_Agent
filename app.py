@@ -48,7 +48,7 @@ with st.sidebar:
         from data_utils import generate_scouting_pdf
 
         pdf_data = generate_scouting_pdf(
-            user_map[selected_user_id],
+            user_map[selected_id],  # Changed from selected_user_id
             status,
             rank,
             roster_str,
@@ -58,7 +58,7 @@ with st.sidebar:
         st.download_button(
             label="💾 Download PDF Report",
             data=pdf_data,
-            file_name=f"{user_map[selected_user_id]}_Scouting.pdf",
+            file_name=f"{user_map[selected_id]}_Scouting.pdf",
             mime="application/pdf"
         )
 
@@ -77,7 +77,15 @@ if prompt := st.chat_input("Ask the council..."):
         placeholder = st.empty()
         placeholder.markdown("⚖️ *Deliberating...*")
 
-        system_instr = f"Persona: Council Advisor. Manager: {user_map[selected_id]} ({status}). Roster: {roster_str}. Picks: {picks_str}."
+        system_instr = (
+            f"You are the League Council Advisor, a veteran Dynasty GM. "
+            f"You are talking to {user_map[selected_id]}. "
+            f"Their team is a {status} (Ranked {rank}/10 in Max PF). "
+            f"Current Roster:\n{roster_str}\n"
+            f"Future Picks:\n{picks_str}\n"
+            "Identify if they should 'Tier Up' (trade depth for stars) or 'Tier Down' (trade 1 star for multiple assets). "
+            "Always reference specific players from their roster in your advice."
+        )
 
         try:
             # We use gemini-2.0-flash-lite if available for lower token usage, otherwise flash

@@ -28,22 +28,30 @@ def get_full_roster_string(roster, db):
     ids = roster.get("players", [])
     return "\n".join([f"- {db.get(i,{}).get('full_name','?')} ({db.get(i,{}).get('position','?')})" for i in ids])
 
-def get_draft_capital(rid, picks):
-    owned = [{"y": y, "r": r, "o": rid} for y in [2026, 2027, 2028] for r in [1, 2, 3]]
-    # Filter trades logic...
-    return ", ".join([f"{p['y']} Rd {p['r']}" for p in owned])
 
-def generate_scouting_pdf(name, status, rank, roster, picks):
-    from io import BytesIO
-    from reportlab.pdfgen import canvas
-    buffer = BytesIO()
-    c = canvas.Canvas(buffer)
-    c.drawString(100, 750, f"Scouting Report: {name}")
-    c.drawString(100, 730, f"Status: {status} | Rank: {rank}")
-    c.showPage()
-    c.save()
-    buffer.seek(0)
-    return buffer
+def get_draft_capital(roster_id, traded_picks):
+    # 1. Start with the "Standard" picks (assuming everyone keeps their own)
+    years = [2026, 2027, 2028]
+    rounds = [1, 2, 3]
+
+    # Create a list of picks the user ORIGINALLY owned
+    my_picks = []
+    for y in years:
+        for r in rounds:
+            # Check if this specific pick was traded AWAY
+            was_traded_away = any(
+                p['year'] == str(y) and p['round'] == r and p['roster_id'] == roster_id
+                for p in traded_picks
+            )
+            if not was_traded_away:
+                my_picks.append(f"{y} Rd {r} (Own)")
+
+    # 2. Add picks the user ACQUIRED from others
+    for p in traded_picks:
+        if p['owner_id'] == roster_id:
+            my_picks.append(f"{p['year']} Rd {p['round']} (via Team {p['roster_id']})")
+
+    return ", ".join(my_picks) if my_picks else "No picks remaining."
 
 def generate_scouting_pdf(name, status, rank, roster, picks):
     buffer = BytesIO()
