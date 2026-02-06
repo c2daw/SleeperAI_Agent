@@ -27,6 +27,14 @@ client = genai.Client(
     http_options=types.HttpOptions(api_version='v1beta')
 )
 
+def _to_gemini_contents(messages):
+    """Convert session state messages to Gemini SDK format."""
+    contents = []
+    for msg in messages:
+        role = "model" if msg["role"] == "assistant" else "user"
+        contents.append(types.Content(role=role, parts=[types.Part(text=msg["content"])]))
+    return contents
+
 # --- 4. DATA LOADING ---
 players_db = data_utils.get_all_players()
 users, rosters, traded_picks = data_utils.get_league_data()
@@ -38,6 +46,8 @@ selected_id = st.sidebar.selectbox("Manager:", options=list(user_map.keys()),
 status, rank, user_roster = data_utils.get_league_context(rosters, selected_id)
 roster_str = data_utils.get_full_roster_string(user_roster, players_db)
 picks_str = data_utils.get_draft_capital(user_roster['roster_id'], traded_picks)
+compact_roster = data_utils.get_compact_roster_summary(user_roster, players_db)
+compact_picks = data_utils.get_compact_draft_summary(user_roster['roster_id'], traded_picks)
 
 with st.sidebar:
     st.metric("Max PF Rank", f"{rank}/10", delta=status)
@@ -62,6 +72,11 @@ with st.sidebar:
             mime="application/pdf"
         )
 
+    st.divider()
+    if st.button("🔄 Reset Conversation"):
+        st.session_state.messages = []
+        st.rerun()
+
 # --- 5. CHAT LOGIC ---
 st.title("⚖️ Dynasty League Advisor")
 
@@ -81,8 +96,8 @@ if prompt := st.chat_input("Ask the adviser..."):
             f"You are the League Council Advisor, a veteran Dynasty GM. "
             f"You are talking to {user_map[selected_id]}. "
             f"Their team is a {status} (Ranked {rank}/10 in Max PF). "
-            f"Current Roster:\n{roster_str}\n"
-            f"Future Picks:\n{picks_str}\n"
+            f"Current Roster:\n{compact_roster}\n"
+            f"Draft Capital:\n{compact_picks}\n"
             "Identify if they should 'Tier Up' (trade depth for stars) or 'Tier Down' (trade 1 star for multiple assets). "
             "Always reference specific players from their roster in your advice."
         )
@@ -91,7 +106,7 @@ if prompt := st.chat_input("Ask the adviser..."):
             # We use gemini-2.0-flash-lite if available for lower token usage, otherwise flash
             response = client.models.generate_content(
                 model="gemini-2.0-flash",
-                contents=prompt,
+                contents=_to_gemini_contents(st.session_state.messages),
                 config=types.GenerateContentConfig(  # Use the explicit Type
                     system_instruction=system_instr,
                     temperature=0.7

@@ -39,7 +39,7 @@ def get_draft_capital(roster_id, traded_picks):
         for r in rounds:
             # Check if this specific pick was traded AWAY
             was_traded_away = any(
-                p['year'] == str(y) and p['round'] == r and p['roster_id'] == roster_id
+                int(p['year']) == y and p['round'] == r and p['roster_id'] == roster_id
                 for p in traded_picks
             )
             if not was_traded_away:
@@ -51,6 +51,44 @@ def get_draft_capital(roster_id, traded_picks):
             my_picks.append(f"{p['year']} Rd {p['round']} (via Team {p['roster_id']})")
 
     return ", ".join(my_picks) if my_picks else "No picks remaining."
+
+def get_compact_roster_summary(roster, db):
+    """Return a compact roster summary: starters by name/position + bench count."""
+    starters = roster.get("starters", [])
+    all_players = roster.get("players", [])
+    lines = ["Starters:"]
+    for pid in starters:
+        info = db.get(pid, {})
+        name = info.get("full_name", "?")
+        pos = info.get("position", "?")
+        lines.append(f"  {pos} {name}")
+    bench_count = max(0, len(all_players) - len(starters))
+    lines.append(f"Bench: {bench_count} players")
+    return "\n".join(lines)
+
+
+def get_compact_draft_summary(roster_id, traded_picks):
+    """Return pick counts per year instead of listing every individual pick."""
+    years = [2026, 2027, 2028]
+    rounds = [1, 2, 3, 4, 5, 6]
+    summary = []
+    for y in years:
+        count = 0
+        # Own picks not traded away
+        for r in rounds:
+            was_traded_away = any(
+                int(p['year']) == y and p['round'] == r and p['roster_id'] == roster_id
+                for p in traded_picks
+            )
+            if not was_traded_away:
+                count += 1
+        # Acquired picks
+        for p in traded_picks:
+            if p['owner_id'] == roster_id and int(p['year']) == y:
+                count += 1
+        summary.append(f"{y}: {count} picks")
+    return ", ".join(summary)
+
 
 def generate_scouting_pdf(name, status, rank, roster, picks):
     buffer = BytesIO()
