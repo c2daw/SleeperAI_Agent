@@ -103,9 +103,8 @@ if prompt := st.chat_input("Ask the adviser..."):
         )
 
         try:
-            # We use gemini-2.0-flash-lite if available for lower token usage, otherwise flash
             response = client.models.generate_content(
-                model="gemini-2.0-flash",
+                model="gemini-2.0-flash-lite",
                 contents=_to_gemini_contents(st.session_state.messages),
                 config=types.GenerateContentConfig(  # Use the explicit Type
                     system_instruction=system_instr,
