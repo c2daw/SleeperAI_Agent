@@ -105,8 +105,8 @@ def get_head_to_head_records():
     sorted_rids = sorted(int(k) for k in team_names_map)
     names = [team_names_map[str(rid)] for rid in sorted_rids]
 
-    display_grid = []  # list of lists of strings ("W-L")
-    numeric_grid = []  # list of lists of floats (net wins, None for diagonal)
+    display_grid = []  # "W-L (pct%)" strings
+    numeric_grid = []  # win percentage (0-100), None for diagonal
 
     for i, row_rid in enumerate(sorted_rids):
         display_row = []
@@ -118,8 +118,10 @@ def get_head_to_head_records():
             else:
                 w = wins.get((row_rid, col_rid), 0)
                 l = wins.get((col_rid, row_rid), 0)
-                display_row.append(f"{w}-{l}")
-                numeric_row.append(w - l)
+                total = w + l
+                pct = round(w / total * 100) if total > 0 else 50
+                display_row.append(f"{w}-{l} ({pct}%)")
+                numeric_row.append(pct)
         display_grid.append(display_row)
         numeric_grid.append(numeric_row)
 

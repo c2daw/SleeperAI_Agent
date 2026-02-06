@@ -5,9 +5,9 @@ import data_utils
 
 
 def render_head_to_head():
-    """Display all-time head-to-head records as a heatmap."""
+    """Display all-time head-to-head records as a heatmap + insights."""
     st.subheader("All-Time Head-to-Head Records")
-    st.caption("Win-Loss record across all 5 dynasty seasons (row vs column)")
+    st.caption("Win-Loss (Win%) across all 5 dynasty seasons — read as row vs column")
 
     try:
         display_grid, numeric_grid, names = data_utils.get_head_to_head_records()
@@ -19,33 +19,203 @@ def render_head_to_head():
         st.info("No historical matchup data found.")
         return
 
-    # Heatmap: color by net wins (green = dominant, red = dominated)
+    # Heatmap colored by win% (50% = neutral white)
     fig = go.Figure(data=go.Heatmap(
         z=numeric_grid,
         x=names,
         y=names,
         text=display_grid,
         texttemplate="%{text}",
-        textfont={"size": 12},
+        textfont={"size": 11},
         colorscale=[
-            [0.0, "#d62728"],    # deep red (big losing record)
-            [0.35, "#ff9896"],   # light red
-            [0.5, "#f5f5f5"],    # neutral
-            [0.65, "#98df8a"],   # light green
-            [1.0, "#2ca02c"],    # deep green (big winning record)
+            [0.0, "#c0392b"],
+            [0.25, "#e74c3c"],
+            [0.4, "#fadbd8"],
+            [0.5, "#f8f9fa"],
+            [0.6, "#d5f5e3"],
+            [0.75, "#27ae60"],
+            [1.0, "#1e8449"],
         ],
-        zmid=0,
-        colorbar=dict(title="Net Wins"),
+        zmin=0, zmax=100,
+        colorbar=dict(title="Win%", ticksuffix="%"),
         hoverongaps=False,
-        hovertemplate="<b>%{y}</b> vs %{x}<br>Record: %{text}<extra></extra>",
+        hovertemplate="<b>%{y}</b> vs %{x}<br>%{text}<extra></extra>",
     ))
     fig.update_layout(
-        height=max(500, len(names) * 55),
+        height=max(520, len(names) * 56),
         xaxis=dict(side="top", tickangle=-45),
         yaxis=dict(autorange="reversed"),
-        margin=dict(t=100, l=120, r=40, b=40),
+        margin=dict(t=100, l=130, r=40, b=40),
     )
     st.plotly_chart(fig, use_container_width=True)
+
+    # --- Insights ---
+    _render_h2h_insights(display_grid, names)
+
+
+def _parse_record(cell):
+    """Parse 'W-L (pct%)' cell into (wins, losses)."""
+    record = cell.split("(")[0].strip()
+    parts = record.split("-")
+    return int(parts[0]), int(parts[1])
+
+
+def _render_h2h_insights(display_grid, names):
+    """Extract league-wide insights from the H2H matrix."""
+    n = len(names)
+
+    # Build per-pair records and per-team aggregates
+    # pair_record[(i,j)] = (wins_i_vs_j, losses_i_vs_j)
+    pair_w = {}
+    team_total_w = [0] * n
+    team_total_l = [0] * n
+
+    for i in range(n):
+        for j in range(n):
+            if i == j:
+                continue
+            w, l = _parse_record(display_grid[i][j])
+            pair_w[(i, j)] = w
+            team_total_w[i] += w
+            team_total_l[i] += l
+
+    # --- 1. League's Most Feared ---
+    # For each team, count how many opponents they have a winning record against
+    # Then find who is the "nemesis" of the most teams
+    dominated_by = {}  # team_idx → list of teams they dominate (winning record, 3+ games)
+    nemesis_of = {}    # team_idx → list of teams they are nemesis for
+
+    for i in range(n):
+        dominated_by[i] = []
+        for j in range(n):
+            if i == j:
+                continue
+            w = pair_w[(i, j)]
+            l = pair_w[(j, i)]
+            total = w + l
+            if total >= 3 and w > l:
+                dominated_by[i].append(j)
+
+    # "Nemesis" = for each team, their worst opponent (biggest loss margin)
+    for j in range(n):
+        worst_margin = 0
+        worst_opp = None
+        for i in range(n):
+            if i == j:
+                continue
+            w = pair_w[(j, i)]  # j's wins vs i
+            l = pair_w[(i, j)]  # i's wins vs j
+            margin = l - w  # how badly j loses to i
+            if margin > worst_margin:
+                worst_margin = margin
+                worst_opp = i
+        if worst_opp is not None:
+            nemesis_of.setdefault(worst_opp, []).append(j)
+
+    most_feared_idx = max(range(n), key=lambda i: len(nemesis_of.get(i, [])))
+    most_feared_victims = nemesis_of.get(most_feared_idx, [])
+
+    # --- 2. Most positive H2H profiles (most winning records) ---
+    positive_counts = [(i, len(dominated_by[i])) for i in range(n)]
+    positive_counts.sort(key=lambda x: x[1], reverse=True)
+
+    # --- 3. Most lopsided rivalry ---
+    best_dominance = None
+    for i in range(n):
+        for j in range(i + 1, n):
+            w_ij = pair_w[(i, j)]
+            w_ji = pair_w[(j, i)]
+            gap = abs(w_ij - w_ji)
+            total = w_ij + w_ji
+            if total >= 3 and (best_dominance is None or gap > best_dominance[0]
+                               or (gap == best_dominance[0] and total > best_dominance[4])):
+                winner = i if w_ij > w_ji else j
+                loser = j if w_ij > w_ji else i
+                best_dominance = (gap, winner, loser, pair_w[(winner, loser)], total)
+
+    # --- 4. Closest rivalry ---
+    best_rivalry = None
+    for i in range(n):
+        for j in range(i + 1, n):
+            w_ij = pair_w[(i, j)]
+            w_ji = pair_w[(j, i)]
+            total = w_ij + w_ji
+            gap = abs(w_ij - w_ji)
+            if total >= 5:
+                score = total * 10 - gap * 15  # reward many games + closeness
+                if best_rivalry is None or score > best_rivalry[0]:
+                    best_rivalry = (score, i, j, w_ij, w_ji, total)
+
+    # --- 5. Perfect records ---
+    perfects = []
+    for i in range(n):
+        for j in range(n):
+            if i == j:
+                continue
+            w = pair_w[(i, j)]
+            l = pair_w[(j, i)]
+            if l == 0 and w >= 3:
+                perfects.append((i, j, w))
+
+    # --- 6. Worst overall record ---
+    worst_idx = min(range(n), key=lambda i: team_total_w[i] - team_total_l[i])
+
+    # --- Render ---
+    st.markdown("#### Insights")
+
+    # Most Feared
+    if most_feared_victims:
+        victim_details = []
+        for v in sorted(most_feared_victims, key=lambda v: pair_w[(most_feared_idx, v)], reverse=True):
+            w = pair_w[(most_feared_idx, v)]
+            l = pair_w[(v, most_feared_idx)]
+            victim_details.append(f"{names[v]} ({w}-{l})")
+        st.markdown(
+            f"👹 **League's Most Feared:** {names[most_feared_idx]} is the #1 nemesis for "
+            f"**{len(most_feared_victims)} teams** — {', '.join(victim_details)}"
+        )
+
+    # Most positive H2H profiles
+    top3 = positive_counts[:3]
+    lines = []
+    for idx, count in top3:
+        tw, tl = team_total_w[idx], team_total_l[idx]
+        pct = round(tw / (tw + tl) * 100)
+        lines.append(f"**{names[idx]}** — winning record vs **{count}/{n-1}** opponents ({tw}-{tl}, {pct}%)")
+    st.markdown("📈 **Most Dominant H2H Profiles:**")
+    for line in lines:
+        st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;{line}")
+
+    # Most lopsided
+    if best_dominance:
+        _, wi, li, w_count, total = best_dominance
+        l_count = pair_w[(li, wi)]
+        st.markdown(
+            f"💀 **Most Lopsided Rivalry:** {names[wi]} leads {names[li]} "
+            f"**{w_count}-{l_count}** all-time"
+        )
+
+    # Closest rivalry
+    if best_rivalry:
+        _, ri, rj, w_ij, w_ji, total = best_rivalry
+        st.markdown(
+            f"⚔️ **Closest Rivalry:** {names[ri]} vs {names[rj]} — "
+            f"**{w_ij}-{w_ji}** across {total} meetings"
+        )
+
+    # Perfect records
+    if perfects:
+        parts = [f"{names[i]} is **{w}-0** vs {names[j]}" for i, j, w in perfects]
+        st.markdown(f"🏆 **Perfect Records:** {' | '.join(parts)}")
+
+    # League punching bag
+    ww, wl = team_total_w[worst_idx], team_total_l[worst_idx]
+    pct = round(ww / (ww + wl) * 100)
+    losing_to = n - 1 - len(dominated_by[worst_idx])
+    st.markdown(
+        f"😅 **Biggest Underdog:** {names[worst_idx]} — **{ww}-{wl}** overall ({pct}%), "
+        f"losing record vs {losing_to} opponents"
+    )
 
 
 def render_power_rankings(rosters, user_map):
