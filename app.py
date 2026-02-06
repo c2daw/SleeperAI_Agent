@@ -115,7 +115,4 @@ if prompt := st.chat_input("Ask the adviser..."):
             placeholder.markdown(ai_text)
             st.session_state.messages.append({"role": "assistant", "content": ai_text})
         except Exception as e:
-            if "429" in str(e):
-                placeholder.error("The Adviser is busy. Please wait 10 seconds (Quota Hit).")
-            else:
-                placeholder.error(f"Error: {e}")
+            placeholder.error(f"Error: {e}")
