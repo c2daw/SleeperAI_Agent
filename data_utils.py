@@ -40,6 +40,135 @@ def get_trending_players():
     return requests.get("https://api.sleeper.app/v1/players/nfl/trending/add").json()
 
 
+@st.cache_data(ttl=86400)
+def get_league_history():
+    """Walk the previous_league_id chain to get all historical league IDs + seasons."""
+    leagues = []
+    lid = LEAGUE_ID
+    while lid:
+        data = requests.get(f"https://api.sleeper.app/v1/league/{lid}").json()
+        leagues.append({"league_id": lid, "season": data.get("season"), "total_rosters": data.get("total_rosters")})
+        lid = data.get("previous_league_id")
+    return leagues
+
+
+@st.cache_data(ttl=86400)
+def _get_matchups_for_league(league_id, week):
+    """Fetch matchups for a specific historical league + week."""
+    resp = requests.get(f"https://api.sleeper.app/v1/league/{league_id}/matchups/{week}")
+    if resp.status_code != 200:
+        return []
+    data = resp.json()
+    return data if isinstance(data, list) else []
+
+
+@st.cache_data(ttl=86400)
+def _get_rosters_for_league(league_id):
+    """Fetch rosters for a specific historical league."""
+    return requests.get(f"https://api.sleeper.app/v1/league/{league_id}/rosters").json()
+
+
+@st.cache_data(ttl=86400)
+def _get_users_for_league(league_id):
+    """Fetch users for a specific historical league."""
+    return requests.get(f"https://api.sleeper.app/v1/league/{league_id}/users").json()
+
+
+@st.cache_data(ttl=86400)
+def get_head_to_head_records():
+    """Build all-time head-to-head W/L matrix across all dynasty seasons.
+
+    Returns (matrix_df, team_names) where matrix_df has display_name index/columns
+    and values are "W-L" strings.
+    """
+    leagues = get_league_history()
+
+    # Build a stable owner_id → display_name map from the current season
+    current_users = _get_users_for_league(LEAGUE_ID)
+    owner_name = {u["user_id"]: u["display_name"] for u in current_users}
+
+    # For each historical season, map roster_id → owner_id
+    # Then collect all matchup results as (winner_owner, loser_owner) pairs
+    wins = {}  # (owner_a, owner_b) → count of A beating B
+
+    for lg in leagues:
+        lid = lg["league_id"]
+        season_rosters = _get_rosters_for_league(lid)
+        season_users = _get_users_for_league(lid)
+
+        # Build roster_id → owner_id for this season
+        rid_to_owner = {}
+        for r in season_rosters:
+            oid = r.get("owner_id")
+            if oid:
+                rid_to_owner[r["roster_id"]] = oid
+                # Backfill names from older seasons if needed
+                if oid not in owner_name:
+                    for u in season_users:
+                        if u["user_id"] == oid:
+                            owner_name[oid] = u["display_name"]
+
+        # Fetch all regular season weeks (1-14 covers most formats)
+        for week in range(1, 18):
+            matchups = _get_matchups_for_league(lid, week)
+            if not matchups:
+                break
+            # Group by matchup_id
+            groups = {}
+            for m in matchups:
+                mid = m.get("matchup_id")
+                if mid is None:
+                    continue
+                groups.setdefault(mid, []).append(m)
+            for mid, pair in groups.items():
+                if len(pair) != 2:
+                    continue
+                a, b = pair
+                score_a = a.get("points") or 0
+                score_b = b.get("points") or 0
+                owner_a = rid_to_owner.get(a["roster_id"])
+                owner_b = rid_to_owner.get(b["roster_id"])
+                if not owner_a or not owner_b or score_a == 0 and score_b == 0:
+                    continue
+                if score_a > score_b:
+                    wins[(owner_a, owner_b)] = wins.get((owner_a, owner_b), 0) + 1
+                elif score_b > score_a:
+                    wins[(owner_b, owner_a)] = wins.get((owner_b, owner_a), 0) + 1
+                # Ties are ignored
+
+    # Build the matrix
+    all_owners = sorted(owner_name.keys(), key=lambda x: owner_name.get(x, x))
+    names = [owner_name[o] for o in all_owners]
+    n = len(all_owners)
+
+    win_matrix = pd.DataFrame(0, index=names, columns=names)
+    loss_matrix = pd.DataFrame(0, index=names, columns=names)
+
+    for (winner, loser), count in wins.items():
+        w_name = owner_name.get(winner)
+        l_name = owner_name.get(loser)
+        if w_name and l_name:
+            win_matrix.loc[w_name, l_name] += count
+            loss_matrix.loc[w_name, l_name] += count
+
+    # Build display matrix (W-L strings) and numeric matrix (net wins for heatmap)
+    display_df = pd.DataFrame("", index=names, columns=names)
+    numeric_df = pd.DataFrame(0.0, index=names, columns=names)
+
+    for row in names:
+        for col in names:
+            if row == col:
+                display_df.loc[row, col] = "-"
+                numeric_df.loc[row, col] = float("nan")
+            else:
+                w = win_matrix.loc[row, col]   # times row beat col
+                l = win_matrix.loc[col, row]   # times col beat row
+                display_df.loc[row, col] = f"{w}-{l}"
+                numeric_df.loc[row, col] = float(w - l)
+
+    return display_df, numeric_df, names
+
+
 # --------------- ANALYSIS HELPERS ---------------
 
 def _roster_id_to_name(rosters, user_map):

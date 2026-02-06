@@ -138,11 +138,13 @@ with tab_advisor:
 
 # --- Tab 2: League Intel ---
 with tab_intel:
-    intel_section = st.radio("Section", ["Power Rankings", "Matchup History", "Transactions"],
+    intel_section = st.radio("Section", ["Power Rankings", "Head-to-Head", "Matchup History", "Transactions"],
                              horizontal=True, key="intel_section")
 
     if intel_section == "Power Rankings":
         ui_components.render_power_rankings(rosters, user_map)
+    elif intel_section == "Head-to-Head":
+        ui_components.render_head_to_head(rosters, user_map)
     elif intel_section == "Matchup History":
         ui_components.render_matchup_history(rosters, user_map, selected_id, current_week)
     elif intel_section == "Transactions":

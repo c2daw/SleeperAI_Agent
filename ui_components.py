@@ -4,6 +4,47 @@ import plotly.graph_objects as go
 import data_utils
 
 
+def render_head_to_head(rosters, user_map):
+    """Display all-time head-to-head records as a heatmap."""
+    st.subheader("All-Time Head-to-Head Records")
+    st.caption("Win-Loss record across all dynasty seasons (row vs column)")
+
+    with st.spinner("Loading historical matchup data..."):
+        display_df, numeric_df, names = data_utils.get_head_to_head_records()
+
+    if not names:
+        st.info("No historical matchup data found.")
+        return
+
+    # Heatmap: color by net wins (green = dominant, red = dominated)
+    fig = go.Figure(data=go.Heatmap(
+        z=numeric_df.values,
+        x=names,
+        y=names,
+        text=display_df.values,
+        texttemplate="%{text}",
+        textfont={"size": 12},
+        colorscale=[
+            [0.0, "#d62728"],    # deep red (big losing record)
+            [0.35, "#ff9896"],   # light red
+            [0.5, "#f5f5f5"],    # neutral
+            [0.65, "#98df8a"],   # light green
+            [1.0, "#2ca02c"],    # deep green (big winning record)
+        ],
+        zmid=0,
+        colorbar=dict(title="Net Wins"),
+        hoverongaps=False,
+        hovertemplate="<b>%{y}</b> vs %{x}<br>Record: %{text}<extra></extra>",
+    ))
+    fig.update_layout(
+        height=max(500, len(names) * 55),
+        xaxis=dict(side="top", tickangle=-45),
+        yaxis=dict(autorange="reversed"),
+        margin=dict(t=100, l=120, r=40, b=40),
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+
 def render_power_rankings(rosters, user_map):
     """Display power rankings table + Max PF bar chart."""
     st.subheader("Power Rankings")
