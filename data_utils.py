@@ -39,7 +39,7 @@ def get_draft_capital(roster_id, traded_picks):
         for r in rounds:
             # Check if this specific pick was traded AWAY
             was_traded_away = any(
-                int(p['year']) == y and p['round'] == r and p['roster_id'] == roster_id
+                int(p['season']) == y and p['round'] == r and p['roster_id'] == roster_id
                 for p in traded_picks
             )
             if not was_traded_away:
@@ -48,7 +48,7 @@ def get_draft_capital(roster_id, traded_picks):
     # 2. Add picks the user ACQUIRED from others
     for p in traded_picks:
         if p['owner_id'] == roster_id:
-            my_picks.append(f"{p['year']} Rd {p['round']} (via Team {p['roster_id']})")
+            my_picks.append(f"{p['season']} Rd {p['round']} (via Team {p['roster_id']})")
 
     return ", ".join(my_picks) if my_picks else "No picks remaining."
 
@@ -77,14 +77,14 @@ def get_compact_draft_summary(roster_id, traded_picks):
         # Own picks not traded away
         for r in rounds:
             was_traded_away = any(
-                int(p['year']) == y and p['round'] == r and p['roster_id'] == roster_id
+                int(p['season']) == y and p['round'] == r and p['roster_id'] == roster_id
                 for p in traded_picks
             )
             if not was_traded_away:
                 count += 1
         # Acquired picks
         for p in traded_picks:
-            if p['owner_id'] == roster_id and int(p['year']) == y:
+            if p['owner_id'] == roster_id and int(p['season']) == y:
                 count += 1
         summary.append(f"{y}: {count} picks")
     return ", ".join(summary)
