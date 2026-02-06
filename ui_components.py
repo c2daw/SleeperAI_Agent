@@ -4,10 +4,10 @@ import plotly.graph_objects as go
 import data_utils
 
 
-def render_head_to_head(rosters, user_map):
+def render_head_to_head():
     """Display all-time head-to-head records as a heatmap."""
     st.subheader("All-Time Head-to-Head Records")
-    st.caption("Win-Loss record across all dynasty seasons (row vs column)")
+    st.caption("Win-Loss record across all 5 dynasty seasons (row vs column)")
 
     with st.spinner("Loading historical matchup data..."):
         display_df, numeric_df, names = data_utils.get_head_to_head_records()

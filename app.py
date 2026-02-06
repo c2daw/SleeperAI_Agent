@@ -144,7 +144,7 @@ with tab_intel:
     if intel_section == "Power Rankings":
         ui_components.render_power_rankings(rosters, user_map)
     elif intel_section == "Head-to-Head":
-        ui_components.render_head_to_head(rosters, user_map)
+        ui_components.render_head_to_head()
     elif intel_section == "Matchup History":
         ui_components.render_matchup_history(rosters, user_map, selected_id, current_week)
     elif intel_section == "Transactions":
