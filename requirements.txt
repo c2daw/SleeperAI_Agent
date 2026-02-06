@@ -3,3 +3,4 @@ requests
 google-genai
 pandas
 reportlab
+plotly
