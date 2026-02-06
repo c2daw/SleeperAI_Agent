@@ -1,5 +1,5 @@
 import json
-import os
+from pathlib import Path
 import streamlit as st
 import requests
 import pandas as pd
@@ -42,27 +42,25 @@ def get_trending_players():
     return requests.get("https://api.sleeper.app/v1/players/nfl/trending/add").json()
 
 
-@st.cache_data(ttl=86400)
 def get_head_to_head_records():
     """Load all-time head-to-head W/L matrix from static JSON + live current season.
 
     Uses roster_id (team slot 1-10) as the stable franchise identifier.
-    Returns (display_df, numeric_df, team_names).
+    Returns (display_grid, numeric_grid, team_names) as plain lists for easy rendering.
     """
     # Load historical snapshot
-    json_path = os.path.join(os.path.dirname(__file__), "h2h_history.json")
+    json_path = Path(__file__).parent / "h2h_history.json"
     with open(json_path) as f:
         history = json.load(f)
 
-    team_names = history["team_names"]  # str(roster_id) → display_name
-    results = history["results"]
+    team_names_map = history["team_names"]  # str(roster_id) → display_name
+    results = list(history["results"])  # copy to avoid mutating cached JSON
     completed_seasons = set(history.get("seasons_included", []))
 
     # Check if current season needs live fetching
     league_info = get_league_settings()
     current_season = league_info.get("season")
     if current_season and current_season not in completed_seasons:
-        # Fetch live matchups for in-progress season
         for week in range(1, 18):
             try:
                 matchups = get_matchups(week)
@@ -103,28 +101,29 @@ def get_head_to_head_records():
         elif sb > sa:
             wins[(rb, ra)] = wins.get((rb, ra), 0) + 1
 
-    # Build matrices using current team names
-    names = [team_names[str(rid)] for rid in sorted(int(k) for k in team_names)]
-    rid_to_name = {int(k): v for k, v in team_names.items()}
+    # Build grids as plain lists (avoids DataFrame serialization issues)
+    sorted_rids = sorted(int(k) for k in team_names_map)
+    names = [team_names_map[str(rid)] for rid in sorted_rids]
 
-    display_df = pd.DataFrame("", index=names, columns=names)
-    numeric_df = pd.DataFrame(0.0, index=names, columns=names)
+    display_grid = []  # list of lists of strings ("W-L")
+    numeric_grid = []  # list of lists of floats (net wins, None for diagonal)
 
-    for row_name in names:
-        for col_name in names:
-            if row_name == col_name:
-                display_df.loc[row_name, col_name] = "-"
-                numeric_df.loc[row_name, col_name] = float("nan")
-                continue
-            # Find roster_ids for these names
-            row_rid = next(rid for rid, n in rid_to_name.items() if n == row_name)
-            col_rid = next(rid for rid, n in rid_to_name.items() if n == col_name)
-            w = wins.get((row_rid, col_rid), 0)
-            l = wins.get((col_rid, row_rid), 0)
-            display_df.loc[row_name, col_name] = f"{w}-{l}"
-            numeric_df.loc[row_name, col_name] = float(w - l)
+    for i, row_rid in enumerate(sorted_rids):
+        display_row = []
+        numeric_row = []
+        for j, col_rid in enumerate(sorted_rids):
+            if i == j:
+                display_row.append("-")
+                numeric_row.append(None)
+            else:
+                w = wins.get((row_rid, col_rid), 0)
+                l = wins.get((col_rid, row_rid), 0)
+                display_row.append(f"{w}-{l}")
+                numeric_row.append(w - l)
+        display_grid.append(display_row)
+        numeric_grid.append(numeric_row)
 
-    return display_df, numeric_df, names
+    return display_grid, numeric_grid, names
 
 
 # --------------- ANALYSIS HELPERS ---------------

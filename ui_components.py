@@ -9,8 +9,11 @@ def render_head_to_head():
     st.subheader("All-Time Head-to-Head Records")
     st.caption("Win-Loss record across all 5 dynasty seasons (row vs column)")
 
-    with st.spinner("Loading historical matchup data..."):
-        display_df, numeric_df, names = data_utils.get_head_to_head_records()
+    try:
+        display_grid, numeric_grid, names = data_utils.get_head_to_head_records()
+    except Exception as e:
+        st.error(f"Failed to load head-to-head data: {e}")
+        return
 
     if not names:
         st.info("No historical matchup data found.")
@@ -18,10 +21,10 @@ def render_head_to_head():
 
     # Heatmap: color by net wins (green = dominant, red = dominated)
     fig = go.Figure(data=go.Heatmap(
-        z=numeric_df.values,
+        z=numeric_grid,
         x=names,
         y=names,
-        text=display_df.values,
+        text=display_grid,
         texttemplate="%{text}",
         textfont={"size": 12},
         colorscale=[

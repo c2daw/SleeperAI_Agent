@@ -43,7 +43,9 @@ def _to_gemini_contents(messages):
 # --- 4. DATA LOADING ---
 players_db = data_utils.get_all_players()
 users, rosters, traded_picks = data_utils.get_league_data()
-user_map = {u["user_id"]: u["display_name"] for u in users}
+# Filter to only roster owners (excludes inactive co-owners like fredmoe)
+roster_owner_ids = {r["owner_id"] for r in rosters if r.get("owner_id")}
+user_map = {u["user_id"]: u["display_name"] for u in users if u["user_id"] in roster_owner_ids}
 
 # Get NFL state for current week
 nfl_state = data_utils.get_nfl_state()
