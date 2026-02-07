@@ -154,17 +154,18 @@ def collect_champions(leagues):
         }
         print(f"    Champion: roster {w_rid}, Runner-up: roster {l_rid}")
 
-        # Losers bracket — toilet bowl (last place)
+        # Losers bracket — toilet bowl (winner of consolation final, p=1)
         losers = requests.get(f"https://api.sleeper.app/v1/league/{lid}/losers_bracket").json()
         if losers:
             max_lr = max(m.get("r", 0) for m in losers)
             losers_final = [m for m in losers if m.get("r") == max_lr]
-            if losers_final:
-                tb_rid = losers_final[0].get("l")  # loser of losers final = last place
-                if tb_rid:
-                    entry["toilet_bowl"] = tb_rid
-                    entry["toilet_bowl_record"] = record_map.get(tb_rid, "?")
-                    print(f"    Toilet Bowl: roster {tb_rid}")
+            # p=1 is the consolation final; its winner "won" the toilet bowl
+            tb_match = min(losers_final, key=lambda m: m.get("p", 99))
+            tb_rid = tb_match.get("w")
+            if tb_rid:
+                entry["toilet_bowl"] = tb_rid
+                entry["toilet_bowl_record"] = record_map.get(tb_rid, "?")
+                print(f"    Toilet Bowl: roster {tb_rid}")
 
         # Surprise narratives
         surprises = []

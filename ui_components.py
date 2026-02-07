@@ -776,16 +776,18 @@ def render_team_history(history):
     total_l = sum(1 for g in games if g["my_score"] < g["opp_score"])
     total_pf = sum(g["my_score"] for g in games)
     titles = sum(1 for c in champions if c["champion"] == rid)
+    toilet_bowls = sum(1 for c in champions if c.get("toilet_bowl") == rid)
     avg_ppg = round(total_pf / len(games), 2) if games else 0
 
     # --- 1. Career Summary ---
     st.subheader(f"{team_name} — Dynasty Profile")
-    c1, c2, c3, c4, c5 = st.columns(5)
+    c1, c2, c3, c4, c5, c6 = st.columns(6)
     c1.metric("Record", f"{total_w}-{total_l}")
     c2.metric("Win %", f"{round(total_w / (total_w + total_l) * 100, 1)}%" if (total_w + total_l) else "0%")
     c3.metric("Titles", titles)
-    c4.metric("Total PF", f"{total_pf:,.1f}")
-    c5.metric("Avg PPG", avg_ppg)
+    c4.metric("Toilet Bowls", toilet_bowls)
+    c5.metric("Total PF", f"{total_pf:,.1f}")
+    c6.metric("Avg PPG", avg_ppg)
 
     # --- 2. Season Breakdown ---
     st.markdown("#### Season Breakdown")
