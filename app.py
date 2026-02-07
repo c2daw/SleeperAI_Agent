@@ -91,8 +91,8 @@ with st.sidebar:
 # --- 5. MAIN AREA WITH TABS ---
 st.title("⚖️ Dynasty League Advisor")
 
-tab_advisor, tab_intel, tab_trade, tab_roster = st.tabs([
-    "💬 Advisor", "📊 League Intel", "🔄 Trade Tools", "📋 Roster Analysis"
+tab_advisor, tab_intel, tab_trade, tab_roster, tab_history = st.tabs([
+    "💬 Advisor", "📊 League Intel", "🔄 Trade Tools", "📋 Roster Analysis", "📜 History"
 ])
 
 # --- Tab 1: Advisor (existing chat) ---
@@ -140,13 +140,11 @@ with tab_advisor:
 
 # --- Tab 2: League Intel ---
 with tab_intel:
-    intel_section = st.radio("Section", ["Power Rankings", "Head-to-Head", "Matchup History", "Transactions"],
+    intel_section = st.radio("Section", ["Power Rankings", "Matchup History", "Transactions"],
                              horizontal=True, key="intel_section")
 
     if intel_section == "Power Rankings":
         ui_components.render_power_rankings(rosters, user_map)
-    elif intel_section == "Head-to-Head":
-        ui_components.render_head_to_head()
     elif intel_section == "Matchup History":
         ui_components.render_matchup_history(rosters, user_map, selected_id, current_week)
     elif intel_section == "Transactions":
@@ -173,3 +171,18 @@ with tab_roster:
         ui_components.render_age_profile(user_roster, players_db)
     elif roster_section == "Waiver Wire":
         ui_components.render_waiver_suggestions(user_roster, rosters, players_db)
+
+# --- Tab 5: History ---
+with tab_history:
+    history_data = data_utils.get_league_history_data()
+    history_section = st.radio("Section", ["Champions", "Head-to-Head", "Record Book", "Draft History"],
+                               horizontal=True, key="history_section")
+
+    if history_section == "Champions":
+        ui_components.render_champions(history_data)
+    elif history_section == "Head-to-Head":
+        ui_components.render_head_to_head()
+    elif history_section == "Record Book":
+        ui_components.render_record_book(history_data)
+    elif history_section == "Draft History":
+        ui_components.render_draft_history(history_data)

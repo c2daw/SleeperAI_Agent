@@ -42,6 +42,13 @@ def get_trending_players():
     return requests.get("https://api.sleeper.app/v1/players/nfl/trending/add").json()
 
 
+def get_league_history_data():
+    """Load the full league history from static JSON."""
+    json_path = Path(__file__).parent / "league_history.json"
+    with open(json_path) as f:
+        return json.load(f)
+
+
 def get_head_to_head_records():
     """Load all-time head-to-head W/L matrix from static JSON + live current season.
 
@@ -49,9 +56,7 @@ def get_head_to_head_records():
     Returns (display_grid, numeric_grid, team_names) as plain lists for easy rendering.
     """
     # Load historical snapshot
-    json_path = Path(__file__).parent / "h2h_history.json"
-    with open(json_path) as f:
-        history = json.load(f)
+    history = get_league_history_data()
 
     team_names_map = history["team_names"]  # str(roster_id) → display_name
     results = list(history["results"])  # copy to avoid mutating cached JSON

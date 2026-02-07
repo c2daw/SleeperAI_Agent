@@ -520,3 +520,195 @@ def render_waiver_suggestions(roster, all_rosters, players_db):
 
     df = pd.DataFrame(suggestions)
     st.dataframe(df, use_container_width=True, hide_index=True)
+
+
+def render_champions(history):
+    """Display trophy case and season-by-season standings."""
+    st.subheader("Trophy Case")
+
+    champions = history.get("champions", [])
+    team_names = history.get("team_names", {})
+    standings = history.get("season_standings", {})
+
+    if not champions:
+        st.info("No champion data available.")
+        return
+
+    # Count titles per team
+    title_counts = {}
+    for c in champions:
+        name = team_names.get(str(c["champion"]), f"Team {c['champion']}")
+        title_counts[name] = title_counts.get(name, 0) + 1
+
+    # Title summary at top
+    title_parts = [f"**{name}**: {count}x" for name, count in
+                   sorted(title_counts.items(), key=lambda x: x[1], reverse=True)]
+    st.markdown(" | ".join(title_parts))
+    st.divider()
+
+    # Season cards
+    for c in sorted(champions, key=lambda x: x["season"]):
+        champ_name = team_names.get(str(c["champion"]), f"Team {c['champion']}")
+        runner_name = team_names.get(str(c["runner_up"]), f"Team {c['runner_up']}")
+
+        col1, col2 = st.columns([1, 2])
+        with col1:
+            st.markdown(f"### {c['season']}")
+            st.markdown(f"**Champion:** {champ_name} ({c['champ_record']})")
+            st.markdown(f"**Runner-Up:** {runner_name} ({c['runner_up_record']})")
+        with col2:
+            season_data = standings.get(c["season"], [])
+            if season_data:
+                with st.expander("Season Standings"):
+                    rows = []
+                    for s in season_data:
+                        rows.append({
+                            "Team": team_names.get(str(s["roster_id"]), f"Team {s['roster_id']}"),
+                            "W": s["wins"],
+                            "L": s["losses"],
+                            "PF": s["pf"],
+                        })
+                    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+        st.divider()
+
+
+def render_record_book(history):
+    """Display all-time records across 5 categories."""
+    st.subheader("All-Time Record Book")
+
+    records = history.get("records", {})
+    team_names = history.get("team_names", {})
+
+    def _team(rid):
+        return team_names.get(str(rid), f"Team {rid}")
+
+    # Highest Single-Week Scores
+    st.markdown("#### Highest Single-Week Scores")
+    highest = records.get("highest_scores", [])
+    if highest:
+        rows = []
+        for i, r in enumerate(highest, 1):
+            rows.append({
+                "Rank": i,
+                "Team": _team(r["roster_id"]),
+                "Points": r["points"],
+                "Season": r["season"],
+                "Week": r["week"],
+            })
+        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+
+    # Lowest Single-Week Scores
+    st.markdown("#### Lowest Single-Week Scores")
+    lowest = records.get("lowest_scores", [])
+    if lowest:
+        rows = []
+        for i, r in enumerate(lowest, 1):
+            rows.append({
+                "Rank": i,
+                "Team": _team(r["roster_id"]),
+                "Points": r["points"],
+                "Season": r["season"],
+                "Week": r["week"],
+            })
+        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+
+    # Closest Games
+    st.markdown("#### Closest Games")
+    closest = records.get("closest_games", [])
+    if closest:
+        rows = []
+        for i, r in enumerate(closest, 1):
+            rows.append({
+                "Rank": i,
+                "Teams": f"{_team(r['roster_a'])} vs {_team(r['roster_b'])}",
+                "Score": f"{r['score_a']} - {r['score_b']}",
+                "Margin": r["margin"],
+                "Season": r["season"],
+                "Week": r["week"],
+            })
+        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+
+    # Biggest Blowouts
+    st.markdown("#### Biggest Blowouts")
+    blowouts = records.get("biggest_blowouts", [])
+    if blowouts:
+        rows = []
+        for i, r in enumerate(blowouts, 1):
+            rows.append({
+                "Rank": i,
+                "Teams": f"{_team(r['roster_a'])} vs {_team(r['roster_b'])}",
+                "Score": f"{r['score_a']} - {r['score_b']}",
+                "Margin": r["margin"],
+                "Season": r["season"],
+                "Week": r["week"],
+            })
+        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+
+    # Highest-Scoring Matchups
+    st.markdown("#### Highest-Scoring Matchups")
+    combined = records.get("highest_combined", [])
+    if combined:
+        rows = []
+        for i, r in enumerate(combined, 1):
+            rows.append({
+                "Rank": i,
+                "Teams": f"{_team(r['roster_a'])} vs {_team(r['roster_b'])}",
+                "Score": f"{r['score_a']} - {r['score_b']}",
+                "Combined": r["combined"],
+                "Season": r["season"],
+                "Week": r["week"],
+            })
+        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+
+
+def render_draft_history(history):
+    """Display draft boards for each season."""
+    st.subheader("Draft History")
+
+    drafts = history.get("drafts", {})
+    team_names = history.get("team_names", {})
+
+    if not drafts:
+        st.info("No draft data available.")
+        return
+
+    seasons = sorted(drafts.keys())
+    selected_year = st.radio("Season", seasons, horizontal=True, key="draft_year")
+
+    draft = drafts[selected_year]
+    draft_type = draft.get("type", "unknown")
+    rounds = draft.get("rounds", 0)
+    picks = draft.get("picks", [])
+
+    st.caption(f"{draft_type.title()} draft — {rounds} rounds, {len(picks)} picks")
+
+    def _team(rid):
+        return team_names.get(str(rid), f"Team {rid}")
+
+    rows = []
+    for p in picks:
+        rows.append({
+            "Pick": p.get("pick", ""),
+            "Round": p.get("round", ""),
+            "Team": _team(p.get("roster_id", "")),
+            "Player": p.get("player", "Unknown"),
+            "Pos": p.get("position", "?"),
+        })
+
+    if not rows:
+        st.info("No picks recorded.")
+        return
+
+    df = pd.DataFrame(rows)
+
+    # For the startup draft (30 rounds), show first 3 rounds then expander for rest
+    if rounds > 6:
+        first_rounds = df[df["Round"] <= 3]
+        rest = df[df["Round"] > 3]
+        st.markdown("**Rounds 1-3**")
+        st.dataframe(first_rounds, use_container_width=True, hide_index=True)
+        if not rest.empty:
+            with st.expander(f"Rounds 4-{rounds} ({len(rest)} picks)"):
+                st.dataframe(rest, use_container_width=True, hide_index=True)
+    else:
+        st.dataframe(df, use_container_width=True, hide_index=True)
