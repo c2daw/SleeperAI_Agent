@@ -3134,39 +3134,64 @@
   ],
   "champions": [
     {
-      "season": "2025",
-      "champion": 3,
-      "runner_up": 2,
-      "champ_record": "11-3",
-      "runner_up_record": "10-4"
-    },
-    {
-      "season": "2024",
+      "season": "2021",
       "champion": 8,
-      "runner_up": 2,
-      "champ_record": "9-5",
-      "runner_up_record": "10-4"
-    },
-    {
-      "season": "2023",
-      "champion": 4,
-      "runner_up": 3,
-      "champ_record": "7-7",
-      "runner_up_record": "8-6"
+      "runner_up": 10,
+      "champ_record": "7-6",
+      "runner_up_record": "7-6",
+      "toilet_bowl": 7,
+      "toilet_bowl_record": "5-8",
+      "surprises": [
+        "best_record_no_title:2:10-3"
+      ]
     },
     {
       "season": "2022",
       "champion": 7,
       "runner_up": 3,
       "champ_record": "9-5",
-      "runner_up_record": "8-6"
+      "runner_up_record": "8-6",
+      "toilet_bowl": 1,
+      "toilet_bowl_record": "6-8",
+      "surprises": [
+        "best_record_no_title:8:10-4"
+      ]
     },
     {
-      "season": "2021",
+      "season": "2023",
+      "champion": 4,
+      "runner_up": 3,
+      "champ_record": "7-7",
+      "runner_up_record": "8-6",
+      "toilet_bowl": 10,
+      "toilet_bowl_record": "4-10",
+      "surprises": [
+        "Won the title as the #5 seed",
+        "best_record_no_title:5:10-4",
+        "defending_champ_fall:7:#6"
+      ]
+    },
+    {
+      "season": "2024",
       "champion": 8,
-      "runner_up": 10,
-      "champ_record": "7-6",
-      "runner_up_record": "7-6"
+      "runner_up": 2,
+      "champ_record": "9-5",
+      "runner_up_record": "10-4",
+      "toilet_bowl": 1,
+      "toilet_bowl_record": "4-10",
+      "surprises": [
+        "best_record_no_title:2:10-4"
+      ]
+    },
+    {
+      "season": "2025",
+      "champion": 3,
+      "runner_up": 2,
+      "champ_record": "11-3",
+      "runner_up_record": "10-4",
+      "toilet_bowl": 1,
+      "toilet_bowl_record": "7-7",
+      "surprises": []
     }
   ],
   "season_standings": {

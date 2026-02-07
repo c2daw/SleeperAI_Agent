@@ -175,7 +175,7 @@ with tab_roster:
 # --- Tab 5: History ---
 with tab_history:
     history_data = data_utils.get_league_history_data()
-    history_section = st.radio("Section", ["Champions", "Head-to-Head", "Record Book", "Draft History", "Team History"],
+    history_section = st.radio("Section", ["Champions", "Head-to-Head", "Record Book", "All-Time Stars", "Draft History", "Team History"],
                                horizontal=True, key="history_section")
 
     if history_section == "Champions":
@@ -184,6 +184,8 @@ with tab_history:
         ui_components.render_head_to_head()
     elif history_section == "Record Book":
         ui_components.render_record_book(history_data)
+    elif history_section == "All-Time Stars":
+        ui_components.render_all_time_stars(history_data)
     elif history_section == "Draft History":
         ui_components.render_draft_history(history_data)
     elif history_section == "Team History":

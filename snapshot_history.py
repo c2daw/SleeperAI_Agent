@@ -103,7 +103,7 @@ def collect_matchups(leagues):
 
 
 def collect_champions(leagues):
-    """Get champion + runner-up for each completed season from the winners bracket."""
+    """Get champion, runner-up, toilet bowl, and surprises for each completed season."""
     champions = []
     for lg in leagues:
         if lg["status"] != "complete":
@@ -115,11 +115,19 @@ def collect_champions(leagues):
         # Get rosters for W-L records
         rosters = requests.get(f"https://api.sleeper.app/v1/league/{lid}/rosters").json()
         record_map = {}
+        wins_map = {}
         for r in rosters:
             s = r.get("settings", {})
             w = s.get("wins", 0)
             l = s.get("losses", 0)
             record_map[r["roster_id"]] = f"{w}-{l}"
+            wins_map[r["roster_id"]] = w
+
+        # Rank teams by wins (1 = most wins)
+        sorted_by_wins = sorted(wins_map.items(), key=lambda x: x[1], reverse=True)
+        rank_map = {}
+        for idx, (rid, _) in enumerate(sorted_by_wins, 1):
+            rank_map[rid] = idx
 
         # Winners bracket — find the championship match (round with highest number)
         bracket = requests.get(f"https://api.sleeper.app/v1/league/{lid}/winners_bracket").json()
@@ -134,15 +142,62 @@ def collect_champions(leagues):
         final = finals[0]
         w_rid = final.get("w")
         l_rid = final.get("l")
-        if w_rid and l_rid:
-            champions.append({
-                "season": season,
-                "champion": w_rid,
-                "runner_up": l_rid,
-                "champ_record": record_map.get(w_rid, "?"),
-                "runner_up_record": record_map.get(l_rid, "?"),
-            })
-            print(f"    Champion: roster {w_rid}, Runner-up: roster {l_rid}")
+        if not (w_rid and l_rid):
+            continue
+
+        entry = {
+            "season": season,
+            "champion": w_rid,
+            "runner_up": l_rid,
+            "champ_record": record_map.get(w_rid, "?"),
+            "runner_up_record": record_map.get(l_rid, "?"),
+        }
+        print(f"    Champion: roster {w_rid}, Runner-up: roster {l_rid}")
+
+        # Losers bracket — toilet bowl (last place)
+        losers = requests.get(f"https://api.sleeper.app/v1/league/{lid}/losers_bracket").json()
+        if losers:
+            max_lr = max(m.get("r", 0) for m in losers)
+            losers_final = [m for m in losers if m.get("r") == max_lr]
+            if losers_final:
+                tb_rid = losers_final[0].get("l")  # loser of losers final = last place
+                if tb_rid:
+                    entry["toilet_bowl"] = tb_rid
+                    entry["toilet_bowl_record"] = record_map.get(tb_rid, "?")
+                    print(f"    Toilet Bowl: roster {tb_rid}")
+
+        # Surprise narratives
+        surprises = []
+        champ_rank = rank_map.get(w_rid, 0)
+        if champ_rank >= 5:
+            surprises.append(f"Won the title as the #{champ_rank} seed")
+
+        # Best record didn't win
+        best_record_rid = sorted_by_wins[0][0]
+        if best_record_rid != w_rid:
+            br_w = wins_map[best_record_rid]
+            br_l = int(record_map.get(best_record_rid, "0-0").split("-")[1])
+            surprises.append(f"best_record_no_title:{best_record_rid}:{br_w}-{br_l}")
+
+        entry["surprises"] = surprises
+        entry["_rank_map"] = rank_map  # temp, used for defending champ check
+        champions.append(entry)
+
+    # Second pass: defending champ fall-off
+    champions.sort(key=lambda x: x["season"])
+    for i in range(1, len(champions)):
+        prev_champ = champions[i - 1]["champion"]
+        rank_map = champions[i]["_rank_map"]
+        prev_rank = rank_map.get(prev_champ, 0)
+        if prev_rank >= 5:
+            champions[i]["surprises"].append(
+                f"defending_champ_fall:{prev_champ}:#{prev_rank}"
+            )
+
+    # Remove temp _rank_map
+    for c in champions:
+        c.pop("_rank_map", None)
+
     return champions
 
 

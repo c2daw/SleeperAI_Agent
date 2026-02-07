@@ -546,16 +546,34 @@ def render_champions(history):
     st.markdown(" | ".join(title_parts))
     st.divider()
 
+    # Toilet bowl counts
+    tb_counts = {}
+    for c in champions:
+        tb_rid = c.get("toilet_bowl")
+        if tb_rid:
+            name = team_names.get(str(tb_rid), f"Team {tb_rid}")
+            tb_counts[name] = tb_counts.get(name, 0) + 1
+    if tb_counts:
+        tb_parts = [f"**{name}**: {count}x" for name, count in
+                    sorted(tb_counts.items(), key=lambda x: x[1], reverse=True)]
+        st.markdown("🚽 Toilet Bowl: " + " | ".join(tb_parts))
+        st.divider()
+
     # Season cards
-    for c in sorted(champions, key=lambda x: x["season"]):
+    sorted_champs = sorted(champions, key=lambda x: x["season"])
+    for c in sorted_champs:
         champ_name = team_names.get(str(c["champion"]), f"Team {c['champion']}")
         runner_name = team_names.get(str(c["runner_up"]), f"Team {c['runner_up']}")
 
         col1, col2 = st.columns([1, 2])
         with col1:
             st.markdown(f"### {c['season']}")
-            st.markdown(f"**Champion:** {champ_name} ({c['champ_record']})")
-            st.markdown(f"**Runner-Up:** {runner_name} ({c['runner_up_record']})")
+            st.markdown(f"🏆 **Champion:** {champ_name} ({c['champ_record']})")
+            st.markdown(f"🥈 **Runner-Up:** {runner_name} ({c['runner_up_record']})")
+            tb_rid = c.get("toilet_bowl")
+            if tb_rid:
+                tb_name = team_names.get(str(tb_rid), f"Team {tb_rid}")
+                st.markdown(f"🚽 **Toilet Bowl:** {tb_name} ({c.get('toilet_bowl_record', '?')})")
         with col2:
             season_data = standings.get(c["season"], [])
             if season_data:
@@ -571,16 +589,73 @@ def render_champions(history):
                     st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
         st.divider()
 
+    # Season Surprises
+    all_surprises = []
+    for c in sorted_champs:
+        for s in c.get("surprises", []):
+            season = c["season"]
+            champ_name = team_names.get(str(c["champion"]), f"Team {c['champion']}")
+            if s.startswith("best_record_no_title:"):
+                parts = s.split(":")
+                br_name = team_names.get(parts[1], f"Team {parts[1]}")
+                all_surprises.append(f"**{season}:** {br_name} went {parts[2]} but lost in the playoffs")
+            elif s.startswith("defending_champ_fall:"):
+                parts = s.split(":")
+                dc_name = team_names.get(parts[1], f"Team {parts[1]}")
+                all_surprises.append(f"**{season}:** Defending champ {dc_name} fell to {parts[2]}")
+            elif "seed" in s:
+                all_surprises.append(f"**{season}:** {champ_name} {s.lower()}")
+
+    if all_surprises:
+        st.markdown("#### Season Surprises")
+        for surprise in all_surprises:
+            st.markdown(f"> {surprise}")
+
 
 def render_record_book(history):
-    """Display all-time records across 5 categories."""
+    """Display all-time records across multiple categories."""
     st.subheader("All-Time Record Book")
 
     records = history.get("records", {})
     team_names = history.get("team_names", {})
+    standings = history.get("season_standings", {})
+    results = history.get("results", [])
 
     def _team(rid):
         return team_names.get(str(rid), f"Team {rid}")
+
+    # All-Time Points
+    st.markdown("#### All-Time Points")
+    team_totals = {}
+    for r in results:
+        for rid, pts in [(r["roster_a"], r["score_a"]), (r["roster_b"], r["score_b"])]:
+            if rid not in team_totals:
+                team_totals[rid] = {"pf": 0, "games": 0, "wins": 0, "losses": 0}
+            team_totals[rid]["pf"] += pts
+            team_totals[rid]["games"] += 1
+            if rid == r["roster_a"]:
+                if r["score_a"] > r["score_b"]:
+                    team_totals[rid]["wins"] += 1
+                elif r["score_a"] < r["score_b"]:
+                    team_totals[rid]["losses"] += 1
+            else:
+                if r["score_b"] > r["score_a"]:
+                    team_totals[rid]["wins"] += 1
+                elif r["score_b"] < r["score_a"]:
+                    team_totals[rid]["losses"] += 1
+    if team_totals:
+        rows = []
+        for rid, stats in sorted(team_totals.items(), key=lambda x: x[1]["pf"], reverse=True):
+            avg = round(stats["pf"] / stats["games"], 2) if stats["games"] else 0
+            rows.append({
+                "Rank": len(rows) + 1,
+                "Team": _team(rid),
+                "Total PF": f"{stats['pf']:,.1f}",
+                "Games": stats["games"],
+                "Avg PPG": avg,
+                "Record": f"{stats['wins']}-{stats['losses']}",
+            })
+        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
 
     # Highest Single-Week Scores
     st.markdown("#### Highest Single-Week Scores")
@@ -725,25 +800,29 @@ def render_team_history(history):
         best = max(g["my_score"] for g in sg)
         worst = min(g["my_score"] for g in sg)
 
-        # Determine finish
-        finish = ""
+        # Regular season rank from standings
+        reg_season = ""
+        ss = standings.get(season, [])
+        for idx, s in enumerate(ss):
+            if s["roster_id"] == rid:
+                reg_season = f"#{idx + 1}"
+                break
+
+        # Playoff result from champions data
+        playoff = ""
         champ = next((c for c in champions if c["season"] == season), None)
         if champ:
             if champ["champion"] == rid:
-                finish = "Champion"
+                playoff = "Champion"
             elif champ["runner_up"] == rid:
-                finish = "Runner-Up"
-
-        # Get rank from standings
-        ss = standings.get(season, [])
-        for idx, s in enumerate(ss):
-            if s["roster_id"] == rid and not finish:
-                finish = f"#{idx + 1}"
-                break
+                playoff = "Runner-Up"
+            elif champ.get("toilet_bowl") == rid:
+                playoff = "Toilet Bowl"
 
         season_rows.append({
             "Season": season, "W": sw, "L": sl, "PF": round(spf, 1),
-            "Avg PPG": savg, "Best Week": best, "Worst Week": worst, "Finish": finish,
+            "Avg PPG": savg, "Best Week": best, "Worst Week": worst,
+            "Reg Season": reg_season, "Playoff Result": playoff,
         })
     st.dataframe(pd.DataFrame(season_rows), use_container_width=True, hide_index=True)
 
@@ -912,3 +991,47 @@ def render_draft_history(history):
                 st.dataframe(rest, use_container_width=True, hide_index=True)
     else:
         st.dataframe(df, use_container_width=True, hide_index=True)
+
+
+def render_all_time_stars(history):
+    """League-wide best player by position for each team."""
+    st.subheader("All-Time Stars by Position")
+
+    team_starters = history.get("team_starters", {})
+    team_names = history.get("team_names", {})
+
+    if not team_starters:
+        st.info("No starter data available.")
+        return
+
+    positions = ["QB", "RB", "WR", "TE"]
+    selected_pos = st.radio("Position", positions, horizontal=True, key="stars_pos")
+
+    rows = []
+    for rid in sorted(team_names.keys(), key=lambda r: team_names[r]):
+        starters = team_starters.get(rid, [])
+        # Find best player at selected position
+        best = None
+        for s in starters:
+            if s["position"] == selected_pos:
+                if best is None or s["total_points"] > best["total_points"]:
+                    best = s
+        if best:
+            bw = best.get("best_week", {})
+            rows.append({
+                "Team": team_names.get(rid, f"Team {rid}"),
+                "Player": best["player_name"],
+                "Total Pts": best["total_points"],
+                "Starts": best["starts"],
+                "Avg PPG": best["avg_ppg"],
+                "Best Game": f"{bw.get('points', 0)} ({bw.get('season', '?')} Wk {bw.get('week', '?')})",
+            })
+
+    if rows:
+        rows.sort(key=lambda x: x["Total Pts"], reverse=True)
+        for i, r in enumerate(rows, 1):
+            r["Rank"] = i
+        df = pd.DataFrame(rows, columns=["Rank", "Team", "Player", "Total Pts", "Starts", "Avg PPG", "Best Game"])
+        st.dataframe(df, use_container_width=True, hide_index=True)
+    else:
+        st.info(f"No {selected_pos} data found.")
