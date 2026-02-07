@@ -661,6 +661,206 @@ def render_record_book(history):
         st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
 
 
+def render_team_history(history):
+    """Display per-team dynasty story with career stats, franchise stars, and trends."""
+    team_names = history.get("team_names", {})
+    results = history.get("results", [])
+    champions = history.get("champions", [])
+    standings = history.get("season_standings", {})
+    team_starters = history.get("team_starters", {})
+
+    if not team_names:
+        st.info("No history data available.")
+        return
+
+    # Team selector
+    sorted_rids = sorted(team_names.keys(), key=lambda r: team_names[r])
+    selected_rid = st.selectbox(
+        "Select Team", sorted_rids,
+        format_func=lambda r: team_names[r], key="team_history_select")
+    team_name = team_names[selected_rid]
+    rid = int(selected_rid)
+
+    # --- Build per-team game log ---
+    games = []
+    for r in results:
+        if r["roster_a"] == rid:
+            games.append({"season": r["season"], "week": r["week"],
+                          "my_score": r["score_a"], "opp_score": r["score_b"],
+                          "opp_rid": r["roster_b"]})
+        elif r["roster_b"] == rid:
+            games.append({"season": r["season"], "week": r["week"],
+                          "my_score": r["score_b"], "opp_score": r["score_a"],
+                          "opp_rid": r["roster_a"]})
+
+    if not games:
+        st.info(f"No matchup data found for {team_name}.")
+        return
+
+    total_w = sum(1 for g in games if g["my_score"] > g["opp_score"])
+    total_l = sum(1 for g in games if g["my_score"] < g["opp_score"])
+    total_pf = sum(g["my_score"] for g in games)
+    titles = sum(1 for c in champions if c["champion"] == rid)
+    avg_ppg = round(total_pf / len(games), 2) if games else 0
+
+    # --- 1. Career Summary ---
+    st.subheader(f"{team_name} — Dynasty Profile")
+    c1, c2, c3, c4, c5 = st.columns(5)
+    c1.metric("Record", f"{total_w}-{total_l}")
+    c2.metric("Win %", f"{round(total_w / (total_w + total_l) * 100, 1)}%" if (total_w + total_l) else "0%")
+    c3.metric("Titles", titles)
+    c4.metric("Total PF", f"{total_pf:,.1f}")
+    c5.metric("Avg PPG", avg_ppg)
+
+    # --- 2. Season Breakdown ---
+    st.markdown("#### Season Breakdown")
+    seasons = sorted(set(g["season"] for g in games))
+    season_rows = []
+    for season in seasons:
+        sg = [g for g in games if g["season"] == season]
+        sw = sum(1 for g in sg if g["my_score"] > g["opp_score"])
+        sl = sum(1 for g in sg if g["my_score"] < g["opp_score"])
+        spf = sum(g["my_score"] for g in sg)
+        savg = round(spf / len(sg), 2) if sg else 0
+        best = max(g["my_score"] for g in sg)
+        worst = min(g["my_score"] for g in sg)
+
+        # Determine finish
+        finish = ""
+        champ = next((c for c in champions if c["season"] == season), None)
+        if champ:
+            if champ["champion"] == rid:
+                finish = "Champion"
+            elif champ["runner_up"] == rid:
+                finish = "Runner-Up"
+
+        # Get rank from standings
+        ss = standings.get(season, [])
+        for idx, s in enumerate(ss):
+            if s["roster_id"] == rid and not finish:
+                finish = f"#{idx + 1}"
+                break
+
+        season_rows.append({
+            "Season": season, "W": sw, "L": sl, "PF": round(spf, 1),
+            "Avg PPG": savg, "Best Week": best, "Worst Week": worst, "Finish": finish,
+        })
+    st.dataframe(pd.DataFrame(season_rows), use_container_width=True, hide_index=True)
+
+    # --- 3. Franchise Stars ---
+    st.markdown("#### Franchise Stars")
+    starters = team_starters.get(selected_rid, [])
+    if starters:
+        star_rows = []
+        for s in starters[:10]:
+            bw = s.get("best_week", {})
+            star_rows.append({
+                "Player": s["player_name"],
+                "Pos": s["position"],
+                "Total Pts": s["total_points"],
+                "Starts": s["starts"],
+                "Avg PPG": s["avg_ppg"],
+                "Best Game": f"{bw.get('points', 0)} ({bw.get('season', '?')} Wk {bw.get('week', '?')})",
+            })
+        st.dataframe(pd.DataFrame(star_rows), use_container_width=True, hide_index=True)
+    else:
+        st.info("No starter data available for this team.")
+
+    # --- 4. Scoring Trends ---
+    st.markdown("#### Scoring Trends")
+    season_avgs = []
+    league_avgs = []
+    for season in seasons:
+        sg = [g for g in games if g["season"] == season]
+        team_avg = round(sum(g["my_score"] for g in sg) / len(sg), 2) if sg else 0
+        # League avg: all scores from this season
+        all_season = [r for r in results if r["season"] == season]
+        all_scores = []
+        for r in all_season:
+            all_scores.append(r["score_a"])
+            all_scores.append(r["score_b"])
+        lg_avg = round(sum(all_scores) / len(all_scores), 2) if all_scores else 0
+        season_avgs.append(team_avg)
+        league_avgs.append(lg_avg)
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=seasons, y=season_avgs, mode="lines+markers",
+                              name=team_name, line=dict(color="#1f77b4", width=3)))
+    fig.add_trace(go.Scatter(x=seasons, y=league_avgs, mode="lines+markers",
+                              name="League Avg", line=dict(color="#aec7e8", width=2, dash="dash")))
+    fig.update_layout(
+        xaxis_title="Season", yaxis_title="Avg Weekly Score",
+        height=350, margin=dict(t=20, b=40),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02),
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+    # --- 5. Notable Games ---
+    st.markdown("#### Notable Games")
+    wins = [g for g in games if g["my_score"] > g["opp_score"]]
+    losses = [g for g in games if g["my_score"] < g["opp_score"]]
+
+    def _opp_name(rid):
+        return team_names.get(str(rid), f"Team {rid}")
+
+    def _game_label(g):
+        return f"{g['my_score']}-{g['opp_score']} vs {_opp_name(g['opp_rid'])} ({g['season']} Wk {g['week']})"
+
+    ng1, ng2, ng3 = st.columns(3)
+    ng4, ng5, ng6 = st.columns(3)
+
+    if wins:
+        best_win = max(wins, key=lambda g: g["my_score"])
+        ng1.metric("Best Win", f"{best_win['my_score']:.1f} pts", _game_label(best_win))
+        closest_win = min(wins, key=lambda g: g["my_score"] - g["opp_score"])
+        margin = round(closest_win["my_score"] - closest_win["opp_score"], 2)
+        ng4.metric("Closest Win", f"+{margin}", _game_label(closest_win))
+
+    if losses:
+        worst_loss = min(losses, key=lambda g: g["my_score"])
+        ng2.metric("Worst Loss", f"{worst_loss['my_score']:.1f} pts", _game_label(worst_loss))
+        closest_loss = max(losses, key=lambda g: g["my_score"] - g["opp_score"])
+        margin = round(closest_loss["opp_score"] - closest_loss["my_score"], 2)
+        ng5.metric("Closest Loss", f"-{margin}", _game_label(closest_loss))
+
+    highest = max(games, key=lambda g: g["my_score"])
+    ng3.metric("Highest Score", f"{highest['my_score']:.1f}", _game_label(highest))
+    lowest = min(games, key=lambda g: g["my_score"])
+    ng6.metric("Lowest Score", f"{lowest['my_score']:.1f}", _game_label(lowest))
+
+    # --- 6. Rivals ---
+    st.markdown("#### Rivals")
+    opp_records = {}
+    for g in games:
+        orid = g["opp_rid"]
+        if orid not in opp_records:
+            opp_records[orid] = {"w": 0, "l": 0}
+        if g["my_score"] > g["opp_score"]:
+            opp_records[orid]["w"] += 1
+        elif g["my_score"] < g["opp_score"]:
+            opp_records[orid]["l"] += 1
+
+    # Best records against (highest win%, min 3 games)
+    qualified = [(orid, rec) for orid, rec in opp_records.items()
+                 if (rec["w"] + rec["l"]) >= 3]
+    best_against = sorted(qualified,
+                          key=lambda x: x[1]["w"] / (x[1]["w"] + x[1]["l"]), reverse=True)[:3]
+    toughest = sorted(qualified,
+                      key=lambda x: x[1]["w"] / (x[1]["w"] + x[1]["l"]))[:3]
+
+    rc1, rc2 = st.columns(2)
+    with rc1:
+        st.markdown("**Best Records Against**")
+        for orid, rec in best_against:
+            pct = round(rec["w"] / (rec["w"] + rec["l"]) * 100)
+            st.markdown(f"- {_opp_name(orid)}: **{rec['w']}-{rec['l']}** ({pct}%)")
+    with rc2:
+        st.markdown("**Toughest Opponents**")
+        for orid, rec in toughest:
+            pct = round(rec["w"] / (rec["w"] + rec["l"]) * 100)
+            st.markdown(f"- {_opp_name(orid)}: **{rec['w']}-{rec['l']}** ({pct}%)")
+
+
 def render_draft_history(history):
     """Display draft boards for each season."""
     st.subheader("Draft History")

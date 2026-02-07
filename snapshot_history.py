@@ -215,6 +215,89 @@ def compute_records(all_results, team_names):
     }
 
 
+def collect_starters(leagues, players_db):
+    """Collect per-team player starter stats from matchup data."""
+    # team_stats[roster_id][player_id] = {total_points, starts, best_week}
+    team_stats = {}
+    for lg in leagues:
+        if lg["status"] != "complete":
+            continue
+        lid = lg["league_id"]
+        season = lg["season"]
+        print(f"  Collecting starters for {season}...")
+        week = 1
+        while week <= 18:
+            resp = requests.get(f"https://api.sleeper.app/v1/league/{lid}/matchups/{week}")
+            if resp.status_code != 200:
+                break
+            matchups = resp.json()
+            if not matchups or not isinstance(matchups, list):
+                break
+            has_points = any((m.get("points") or 0) > 0 for m in matchups)
+            if not has_points:
+                break
+
+            for m in matchups:
+                rid = m.get("roster_id")
+                starters = m.get("starters") or []
+                starters_points = m.get("starters_points") or []
+                if not starters or not starters_points:
+                    continue
+
+                if rid not in team_stats:
+                    team_stats[rid] = {}
+
+                for pid, pts in zip(starters, starters_points):
+                    if not pid or pid == "0":
+                        continue
+                    pts = pts or 0
+                    if pid not in team_stats[rid]:
+                        team_stats[rid][pid] = {
+                            "total_points": 0, "starts": 0,
+                            "best_week": {"points": 0, "season": season, "week": week},
+                        }
+                    entry = team_stats[rid][pid]
+                    entry["total_points"] += pts
+                    entry["starts"] += 1
+                    if pts > entry["best_week"]["points"]:
+                        entry["best_week"] = {"points": pts, "season": season, "week": week}
+            week += 1
+
+    # Build output: top 15 per team with resolved names
+    result = {}
+    for rid, players in team_stats.items():
+        sorted_players = sorted(players.items(), key=lambda x: x[1]["total_points"], reverse=True)[:15]
+        team_list = []
+        for pid, stats in sorted_players:
+            info = players_db.get(pid, {})
+            name = info.get("full_name")
+            pos = info.get("position", "?")
+            if not name:
+                # Defense entries have no full_name
+                team_abbr = info.get("player_id", pid)
+                if pos == "DEF":
+                    name = f"{info.get('last_name', pid)} DEF"
+                else:
+                    name = info.get("last_name") or pid
+            total = round(stats["total_points"], 2)
+            starts = stats["starts"]
+            avg = round(total / starts, 2) if starts else 0
+            best = stats["best_week"]
+            team_list.append({
+                "player_id": pid,
+                "player_name": name,
+                "position": pos,
+                "total_points": total,
+                "starts": starts,
+                "avg_ppg": avg,
+                "best_week": {"points": round(best["points"], 2),
+                              "season": best["season"], "week": best["week"]},
+            })
+        result[str(rid)] = team_list
+    print(f"  Collected starters for {len(result)} teams")
+    return result
+
+
 def collect_drafts(leagues, players_db):
     """Collect draft picks for each completed season."""
     drafts = {}
@@ -281,6 +364,9 @@ def snapshot():
     print("\n--- Computing records ---")
     records = compute_records(all_results, team_names)
 
+    print("\n--- Collecting starters ---")
+    team_starters = collect_starters(leagues, players_db)
+
     print("\n--- Collecting drafts ---")
     drafts = collect_drafts(leagues, players_db)
 
@@ -292,6 +378,7 @@ def snapshot():
         "season_standings": standings,
         "records": records,
         "drafts": drafts,
+        "team_starters": team_starters,
     }
 
     with open("league_history.json", "w") as f:
@@ -303,6 +390,7 @@ def snapshot():
     print(f"  {len(champions)} champions")
     print(f"  {len(standings)} season standings")
     print(f"  {len(drafts)} drafts")
+    print(f"  {len(team_starters)} teams with starter data")
     print(f"Seasons: {output['seasons_included']}")
 
 

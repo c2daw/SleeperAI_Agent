@@ -7514,5 +7514,1977 @@
         }
       ]
     }
+  },
+  "team_starters": {
+    "1": [
+      {
+        "player_id": "4046",
+        "player_name": "Patrick Mahomes",
+        "position": "QB",
+        "total_points": 1281.6,
+        "starts": 67,
+        "avg_ppg": 19.13,
+        "best_week": {
+          "points": 34.14,
+          "season": "2022",
+          "week": 9
+        }
+      },
+      {
+        "player_id": "9221",
+        "player_name": "Jahmyr Gibbs",
+        "position": "RB",
+        "total_points": 855.3,
+        "starts": 48,
+        "avg_ppg": 17.82,
+        "best_week": {
+          "points": 49.9,
+          "season": "2025",
+          "week": 12
+        }
+      },
+      {
+        "player_id": "1479",
+        "player_name": "Keenan Allen",
+        "position": "WR",
+        "total_points": 679.46,
+        "starts": 64,
+        "avg_ppg": 10.62,
+        "best_week": {
+          "points": 35.46,
+          "season": "2023",
+          "week": 3
+        }
+      },
+      {
+        "player_id": "7528",
+        "player_name": "Najee Harris",
+        "position": "RB",
+        "total_points": 457.5,
+        "starts": 40,
+        "avg_ppg": 11.44,
+        "best_week": {
+          "points": 24.2,
+          "season": "2023",
+          "week": 17
+        }
+      },
+      {
+        "player_id": "8136",
+        "player_name": "Rachaad White",
+        "position": "RB",
+        "total_points": 445.4,
+        "starts": 41,
+        "avg_ppg": 10.86,
+        "best_week": {
+          "points": 25.9,
+          "season": "2023",
+          "week": 9
+        }
+      },
+      {
+        "player_id": "4227",
+        "player_name": "Harrison Butker",
+        "position": "K",
+        "total_points": 420.0,
+        "starts": 50,
+        "avg_ppg": 8.4,
+        "best_week": {
+          "points": 16.0,
+          "season": "2023",
+          "week": 6
+        }
+      },
+      {
+        "player_id": "PIT",
+        "player_name": "Steelers DEF",
+        "position": "DEF",
+        "total_points": 400.0,
+        "starts": 51,
+        "avg_ppg": 7.84,
+        "best_week": {
+          "points": 29.0,
+          "season": "2023",
+          "week": 2
+        }
+      },
+      {
+        "player_id": "8138",
+        "player_name": "James Cook",
+        "position": "RB",
+        "total_points": 393.4,
+        "starts": 31,
+        "avg_ppg": 12.69,
+        "best_week": {
+          "points": 35.1,
+          "season": "2023",
+          "week": 15
+        }
+      },
+      {
+        "player_id": "11635",
+        "player_name": "Ladd McConkey",
+        "position": "WR",
+        "total_points": 339.5,
+        "starts": 33,
+        "avg_ppg": 10.29,
+        "best_week": {
+          "points": 26.1,
+          "season": "2024",
+          "week": 8
+        }
+      },
+      {
+        "player_id": "6151",
+        "player_name": "Miles Sanders",
+        "position": "RB",
+        "total_points": 303.5,
+        "starts": 33,
+        "avg_ppg": 9.2,
+        "best_week": {
+          "points": 28.0,
+          "season": "2022",
+          "week": 12
+        }
+      },
+      {
+        "player_id": "3198",
+        "player_name": "Derrick Henry",
+        "position": "RB",
+        "total_points": 263.76,
+        "starts": 17,
+        "avg_ppg": 15.52,
+        "best_week": {
+          "points": 34.8,
+          "season": "2022",
+          "week": 8
+        }
+      },
+      {
+        "player_id": "3969",
+        "player_name": "Leonard Fournette",
+        "position": "RB",
+        "total_points": 263.5,
+        "starts": 20,
+        "avg_ppg": 13.18,
+        "best_week": {
+          "points": 37.1,
+          "season": "2021",
+          "week": 12
+        }
+      },
+      {
+        "player_id": "11655",
+        "player_name": "Tyrone Tracy",
+        "position": "RB",
+        "total_points": 234.3,
+        "starts": 21,
+        "avg_ppg": 11.16,
+        "best_week": {
+          "points": 23.9,
+          "season": "2025",
+          "week": 18
+        }
+      },
+      {
+        "player_id": "4217",
+        "player_name": "George Kittle",
+        "position": "TE",
+        "total_points": 214.4,
+        "starts": 23,
+        "avg_ppg": 9.32,
+        "best_week": {
+          "points": 30.6,
+          "season": "2021",
+          "week": 13
+        }
+      },
+      {
+        "player_id": "11620",
+        "player_name": "Rome Odunze",
+        "position": "WR",
+        "total_points": 179.1,
+        "starts": 20,
+        "avg_ppg": 8.96,
+        "best_week": {
+          "points": 28.3,
+          "season": "2025",
+          "week": 2
+        }
+      }
+    ],
+    "2": [
+      {
+        "player_id": "6786",
+        "player_name": "CeeDee Lamb",
+        "position": "WR",
+        "total_points": 1028.8,
+        "starts": 74,
+        "avg_ppg": 13.9,
+        "best_week": {
+          "points": 35.0,
+          "season": "2023",
+          "week": 8
+        }
+      },
+      {
+        "player_id": "6794",
+        "player_name": "Justin Jefferson",
+        "position": "WR",
+        "total_points": 995.04,
+        "starts": 73,
+        "avg_ppg": 13.63,
+        "best_week": {
+          "points": 31.4,
+          "season": "2024",
+          "week": 16
+        }
+      },
+      {
+        "player_id": "9509",
+        "player_name": "Bijan Robinson",
+        "position": "RB",
+        "total_points": 853.8,
+        "starts": 51,
+        "avg_ppg": 16.74,
+        "best_week": {
+          "points": 37.4,
+          "season": "2025",
+          "week": 17
+        }
+      },
+      {
+        "player_id": "6790",
+        "player_name": "D'Andre Swift",
+        "position": "RB",
+        "total_points": 682.1,
+        "starts": 57,
+        "avg_ppg": 11.97,
+        "best_week": {
+          "points": 25.6,
+          "season": "2023",
+          "week": 2
+        }
+      },
+      {
+        "player_id": "11533",
+        "player_name": "Brandon Aubrey",
+        "position": "K",
+        "total_points": 500.6,
+        "starts": 48,
+        "avg_ppg": 10.43,
+        "best_week": {
+          "points": 22.0,
+          "season": "2025",
+          "week": 2
+        }
+      },
+      {
+        "player_id": "4217",
+        "player_name": "George Kittle",
+        "position": "TE",
+        "total_points": 492.5,
+        "starts": 41,
+        "avg_ppg": 12.01,
+        "best_week": {
+          "points": 26.2,
+          "season": "2023",
+          "week": 5
+        }
+      },
+      {
+        "player_id": "6904",
+        "player_name": "Jalen Hurts",
+        "position": "QB",
+        "total_points": 465.64,
+        "starts": 23,
+        "avg_ppg": 20.25,
+        "best_week": {
+          "points": 35.14,
+          "season": "2024",
+          "week": 8
+        }
+      },
+      {
+        "player_id": "7523",
+        "player_name": "Trevor Lawrence",
+        "position": "QB",
+        "total_points": 436.16,
+        "starts": 27,
+        "avg_ppg": 16.15,
+        "best_week": {
+          "points": 33.42,
+          "season": "2022",
+          "week": 14
+        }
+      },
+      {
+        "player_id": "7569",
+        "player_name": "Nico Collins",
+        "position": "WR",
+        "total_points": 432.0,
+        "starts": 35,
+        "avg_ppg": 12.34,
+        "best_week": {
+          "points": 29.6,
+          "season": "2023",
+          "week": 13
+        }
+      },
+      {
+        "player_id": "4037",
+        "player_name": "Chris Godwin",
+        "position": "WR",
+        "total_points": 378.2,
+        "starts": 37,
+        "avg_ppg": 10.22,
+        "best_week": {
+          "points": 30.0,
+          "season": "2024",
+          "week": 6
+        }
+      },
+      {
+        "player_id": "7594",
+        "player_name": "Chuba Hubbard",
+        "position": "RB",
+        "total_points": 374.5,
+        "starts": 30,
+        "avg_ppg": 12.48,
+        "best_week": {
+          "points": 30.5,
+          "season": "2024",
+          "week": 16
+        }
+      },
+      {
+        "player_id": "8138",
+        "player_name": "James Cook",
+        "position": "RB",
+        "total_points": 282.7,
+        "starts": 17,
+        "avg_ppg": 16.63,
+        "best_week": {
+          "points": 33.6,
+          "season": "2025",
+          "week": 8
+        }
+      },
+      {
+        "player_id": "8144",
+        "player_name": "Chris Olave",
+        "position": "WR",
+        "total_points": 265.7,
+        "starts": 25,
+        "avg_ppg": 10.63,
+        "best_week": {
+          "points": 18.8,
+          "season": "2023",
+          "week": 16
+        }
+      },
+      {
+        "player_id": "2374",
+        "player_name": "Tyler Lockett",
+        "position": "WR",
+        "total_points": 189.7,
+        "starts": 20,
+        "avg_ppg": 9.48,
+        "best_week": {
+          "points": 21.9,
+          "season": "2023",
+          "week": 2
+        }
+      },
+      {
+        "player_id": "3321",
+        "player_name": "Tyreek Hill",
+        "position": "WR",
+        "total_points": 169.7,
+        "starts": 15,
+        "avg_ppg": 11.31,
+        "best_week": {
+          "points": 23.1,
+          "season": "2024",
+          "week": 14
+        }
+      }
+    ],
+    "3": [
+      {
+        "player_id": "3198",
+        "player_name": "Derrick Henry",
+        "position": "RB",
+        "total_points": 1002.86,
+        "starts": 59,
+        "avg_ppg": 17.0,
+        "best_week": {
+          "points": 45.6,
+          "season": "2025",
+          "week": 17
+        }
+      },
+      {
+        "player_id": "6904",
+        "player_name": "Jalen Hurts",
+        "position": "QB",
+        "total_points": 924.16,
+        "starts": 42,
+        "avg_ppg": 22.0,
+        "best_week": {
+          "points": 34.7,
+          "season": "2022",
+          "week": 15
+        }
+      },
+      {
+        "player_id": "7547",
+        "player_name": "Amon-Ra St. Brown",
+        "position": "WR",
+        "total_points": 900.18,
+        "starts": 63,
+        "avg_ppg": 14.29,
+        "best_week": {
+          "points": 34.9,
+          "season": "2025",
+          "week": 15
+        }
+      },
+      {
+        "player_id": "1466",
+        "player_name": "Travis Kelce",
+        "position": "TE",
+        "total_points": 724.9,
+        "starts": 72,
+        "avg_ppg": 10.07,
+        "best_week": {
+          "points": 29.9,
+          "season": "2023",
+          "week": 7
+        }
+      },
+      {
+        "player_id": "5892",
+        "player_name": "David Montgomery",
+        "position": "RB",
+        "total_points": 636.32,
+        "starts": 50,
+        "avg_ppg": 12.73,
+        "best_week": {
+          "points": 33.1,
+          "season": "2023",
+          "week": 4
+        }
+      },
+      {
+        "player_id": "4039",
+        "player_name": "Cooper Kupp",
+        "position": "WR",
+        "total_points": 600.6,
+        "starts": 45,
+        "avg_ppg": 13.35,
+        "best_week": {
+          "points": 27.8,
+          "season": "2021",
+          "week": 2
+        }
+      },
+      {
+        "player_id": "6801",
+        "player_name": "Tee Higgins",
+        "position": "WR",
+        "total_points": 526.7,
+        "starts": 47,
+        "avg_ppg": 11.21,
+        "best_week": {
+          "points": 34.6,
+          "season": "2024",
+          "week": 17
+        }
+      },
+      {
+        "player_id": "5927",
+        "player_name": "Terry McLaurin",
+        "position": "WR",
+        "total_points": 503.1,
+        "starts": 53,
+        "avg_ppg": 9.49,
+        "best_week": {
+          "points": 24.3,
+          "season": "2021",
+          "week": 4
+        }
+      },
+      {
+        "player_id": "9224",
+        "player_name": "Chase Brown",
+        "position": "RB",
+        "total_points": 417.4,
+        "starts": 28,
+        "avg_ppg": 14.91,
+        "best_week": {
+          "points": 30.9,
+          "season": "2025",
+          "week": 16
+        }
+      },
+      {
+        "player_id": "11566",
+        "player_name": "Jayden Daniels",
+        "position": "QB",
+        "total_points": 396.84,
+        "starts": 20,
+        "avg_ppg": 19.84,
+        "best_week": {
+          "points": 34.42,
+          "season": "2024",
+          "week": 16
+        }
+      },
+      {
+        "player_id": "4034",
+        "player_name": "Christian McCaffrey",
+        "position": "RB",
+        "total_points": 388.7,
+        "starts": 20,
+        "avg_ppg": 19.43,
+        "best_week": {
+          "points": 35.6,
+          "season": "2025",
+          "week": 7
+        }
+      },
+      {
+        "player_id": "3164",
+        "player_name": "Ezekiel Elliott",
+        "position": "RB",
+        "total_points": 351.96,
+        "starts": 30,
+        "avg_ppg": 11.73,
+        "best_week": {
+          "points": 23.6,
+          "season": "2021",
+          "week": 3
+        }
+      },
+      {
+        "player_id": "SF",
+        "player_name": "49ers DEF",
+        "position": "DEF",
+        "total_points": 321.0,
+        "starts": 34,
+        "avg_ppg": 9.44,
+        "best_week": {
+          "points": 24.0,
+          "season": "2024",
+          "week": 4
+        }
+      },
+      {
+        "player_id": "3163",
+        "player_name": "Jared Goff",
+        "position": "QB",
+        "total_points": 287.46,
+        "starts": 15,
+        "avg_ppg": 19.16,
+        "best_week": {
+          "points": 26.46,
+          "season": "2025",
+          "week": 16
+        }
+      },
+      {
+        "player_id": "8144",
+        "player_name": "Chris Olave",
+        "position": "WR",
+        "total_points": 234.9,
+        "starts": 19,
+        "avg_ppg": 12.36,
+        "best_week": {
+          "points": 31.8,
+          "season": "2025",
+          "week": 16
+        }
+      }
+    ],
+    "4": [
+      {
+        "player_id": "4881",
+        "player_name": "Lamar Jackson",
+        "position": "QB",
+        "total_points": 1420.34,
+        "starts": 74,
+        "avg_ppg": 19.19,
+        "best_week": {
+          "points": 41.62,
+          "season": "2022",
+          "week": 2
+        }
+      },
+      {
+        "player_id": "4018",
+        "player_name": "Joe Mixon",
+        "position": "RB",
+        "total_points": 841.2,
+        "starts": 58,
+        "avg_ppg": 14.5,
+        "best_week": {
+          "points": 51.1,
+          "season": "2022",
+          "week": 9
+        }
+      },
+      {
+        "player_id": "8155",
+        "player_name": "Breece Hall",
+        "position": "RB",
+        "total_points": 679.86,
+        "starts": 49,
+        "avg_ppg": 13.87,
+        "best_week": {
+          "points": 37.1,
+          "season": "2023",
+          "week": 16
+        }
+      },
+      {
+        "player_id": "9997",
+        "player_name": "Zay Flowers",
+        "position": "WR",
+        "total_points": 531.0,
+        "starts": 50,
+        "avg_ppg": 10.62,
+        "best_week": {
+          "points": 27.8,
+          "season": "2025",
+          "week": 18
+        }
+      },
+      {
+        "player_id": "8137",
+        "player_name": "George Pickens",
+        "position": "WR",
+        "total_points": 508.7,
+        "starts": 49,
+        "avg_ppg": 10.38,
+        "best_week": {
+          "points": 29.4,
+          "season": "2025",
+          "week": 4
+        }
+      },
+      {
+        "player_id": "5045",
+        "player_name": "Courtland Sutton",
+        "position": "WR",
+        "total_points": 479.5,
+        "starts": 43,
+        "avg_ppg": 11.15,
+        "best_week": {
+          "points": 25.7,
+          "season": "2024",
+          "week": 12
+        }
+      },
+      {
+        "player_id": "2749",
+        "player_name": "Raheem Mostert",
+        "position": "RB",
+        "total_points": 378.8,
+        "starts": 29,
+        "avg_ppg": 13.06,
+        "best_week": {
+          "points": 41.7,
+          "season": "2023",
+          "week": 3
+        }
+      },
+      {
+        "player_id": "10859",
+        "player_name": "Sam LaPorta",
+        "position": "TE",
+        "total_points": 330.5,
+        "starts": 33,
+        "avg_ppg": 10.02,
+        "best_week": {
+          "points": 26.1,
+          "season": "2023",
+          "week": 15
+        }
+      },
+      {
+        "player_id": "4029",
+        "player_name": "Dalvin Cook",
+        "position": "RB",
+        "total_points": 311.3,
+        "starts": 26,
+        "avg_ppg": 11.97,
+        "best_week": {
+          "points": 24.1,
+          "season": "2022",
+          "week": 5
+        }
+      },
+      {
+        "player_id": "4068",
+        "player_name": "Mike Williams",
+        "position": "WR",
+        "total_points": 269.4,
+        "starts": 27,
+        "avg_ppg": 9.98,
+        "best_week": {
+          "points": 28.5,
+          "season": "2021",
+          "week": 5
+        }
+      },
+      {
+        "player_id": "5947",
+        "player_name": "Jakobi Meyers",
+        "position": "WR",
+        "total_points": 251.2,
+        "starts": 31,
+        "avg_ppg": 8.1,
+        "best_week": {
+          "points": 22.8,
+          "season": "2024",
+          "week": 18
+        }
+      },
+      {
+        "player_id": "DAL",
+        "player_name": "Cowboys DEF",
+        "position": "DEF",
+        "total_points": 244.0,
+        "starts": 24,
+        "avg_ppg": 10.17,
+        "best_week": {
+          "points": 28.0,
+          "season": "2023",
+          "week": 4
+        }
+      },
+      {
+        "player_id": "BAL",
+        "player_name": "Ravens DEF",
+        "position": "DEF",
+        "total_points": 170.0,
+        "starts": 22,
+        "avg_ppg": 7.73,
+        "best_week": {
+          "points": 18.0,
+          "season": "2022",
+          "week": 11
+        }
+      },
+      {
+        "player_id": "4033",
+        "player_name": "David Njoku",
+        "position": "TE",
+        "total_points": 167.5,
+        "starts": 20,
+        "avg_ppg": 8.38,
+        "best_week": {
+          "points": 21.7,
+          "season": "2024",
+          "week": 13
+        }
+      },
+      {
+        "player_id": "8110",
+        "player_name": "Jake Ferguson",
+        "position": "TE",
+        "total_points": 161.2,
+        "starts": 17,
+        "avg_ppg": 9.48,
+        "best_week": {
+          "points": 20.4,
+          "season": "2025",
+          "week": 5
+        }
+      }
+    ],
+    "5": [
+      {
+        "player_id": "4984",
+        "player_name": "Josh Allen",
+        "position": "QB",
+        "total_points": 1742.46,
+        "starts": 79,
+        "avg_ppg": 22.06,
+        "best_week": {
+          "points": 51.88,
+          "season": "2024",
+          "week": 14
+        }
+      },
+      {
+        "player_id": "4034",
+        "player_name": "Christian McCaffrey",
+        "position": "RB",
+        "total_points": 714.66,
+        "starts": 42,
+        "avg_ppg": 17.02,
+        "best_week": {
+          "points": 45.2,
+          "season": "2023",
+          "week": 4
+        }
+      },
+      {
+        "player_id": "9226",
+        "player_name": "De'Von Achane",
+        "position": "RB",
+        "total_points": 620.0,
+        "starts": 40,
+        "avg_ppg": 15.5,
+        "best_week": {
+          "points": 37.5,
+          "season": "2025",
+          "week": 10
+        }
+      },
+      {
+        "player_id": "7588",
+        "player_name": "Javonte Williams",
+        "position": "RB",
+        "total_points": 552.8,
+        "starts": 54,
+        "avg_ppg": 10.24,
+        "best_week": {
+          "points": 26.4,
+          "season": "2025",
+          "week": 5
+        }
+      },
+      {
+        "player_id": "3321",
+        "player_name": "Tyreek Hill",
+        "position": "WR",
+        "total_points": 550.8,
+        "starts": 37,
+        "avg_ppg": 14.89,
+        "best_week": {
+          "points": 39.0,
+          "season": "2023",
+          "week": 1
+        }
+      },
+      {
+        "player_id": "7611",
+        "player_name": "Rhamondre Stevenson",
+        "position": "RB",
+        "total_points": 543.8,
+        "starts": 52,
+        "avg_ppg": 10.46,
+        "best_week": {
+          "points": 34.3,
+          "season": "2025",
+          "week": 18
+        }
+      },
+      {
+        "player_id": "7042",
+        "player_name": "Tyler Bass",
+        "position": "K",
+        "total_points": 485.0,
+        "starts": 62,
+        "avg_ppg": 7.82,
+        "best_week": {
+          "points": 22.0,
+          "season": "2022",
+          "week": 11
+        }
+      },
+      {
+        "player_id": "5844",
+        "player_name": "T.J. Hockenson",
+        "position": "TE",
+        "total_points": 428.6,
+        "starts": 53,
+        "avg_ppg": 8.09,
+        "best_week": {
+          "points": 31.9,
+          "season": "2022",
+          "week": 4
+        }
+      },
+      {
+        "player_id": "1426",
+        "player_name": "DeAndre Hopkins",
+        "position": "WR",
+        "total_points": 360.6,
+        "starts": 39,
+        "avg_ppg": 9.25,
+        "best_week": {
+          "points": 24.6,
+          "season": "2024",
+          "week": 9
+        }
+      },
+      {
+        "player_id": "8148",
+        "player_name": "Jameson Williams",
+        "position": "WR",
+        "total_points": 348.7,
+        "starts": 31,
+        "avg_ppg": 11.25,
+        "best_week": {
+          "points": 23.5,
+          "season": "2024",
+          "week": 16
+        }
+      },
+      {
+        "player_id": "4950",
+        "player_name": "Christian Kirk",
+        "position": "WR",
+        "total_points": 327.12,
+        "starts": 40,
+        "avg_ppg": 8.18,
+        "best_week": {
+          "points": 22.5,
+          "season": "2022",
+          "week": 10
+        }
+      },
+      {
+        "player_id": "6783",
+        "player_name": "Jerry Jeudy",
+        "position": "WR",
+        "total_points": 285.8,
+        "starts": 32,
+        "avg_ppg": 8.93,
+        "best_week": {
+          "points": 36.0,
+          "season": "2024",
+          "week": 13
+        }
+      },
+      {
+        "player_id": "HOU",
+        "player_name": "Texans DEF",
+        "position": "DEF",
+        "total_points": 271.0,
+        "starts": 29,
+        "avg_ppg": 9.34,
+        "best_week": {
+          "points": 20.0,
+          "season": "2024",
+          "week": 11
+        }
+      },
+      {
+        "player_id": "PHI",
+        "player_name": "Eagles DEF",
+        "position": "DEF",
+        "total_points": 271.0,
+        "starts": 32,
+        "avg_ppg": 8.47,
+        "best_week": {
+          "points": 20.0,
+          "season": "2022",
+          "week": 3
+        }
+      },
+      {
+        "player_id": "6945",
+        "player_name": "Antonio Gibson",
+        "position": "RB",
+        "total_points": 229.6,
+        "starts": 25,
+        "avg_ppg": 9.18,
+        "best_week": {
+          "points": 19.2,
+          "season": "2021",
+          "week": 5
+        }
+      }
+    ],
+    "6": [
+      {
+        "player_id": "7564",
+        "player_name": "Ja'Marr Chase",
+        "position": "WR",
+        "total_points": 1071.62,
+        "starts": 71,
+        "avg_ppg": 15.09,
+        "best_week": {
+          "points": 49.9,
+          "season": "2024",
+          "week": 10
+        }
+      },
+      {
+        "player_id": "3294",
+        "player_name": "Dak Prescott",
+        "position": "QB",
+        "total_points": 1042.18,
+        "starts": 58,
+        "avg_ppg": 17.97,
+        "best_week": {
+          "points": 37.86,
+          "season": "2023",
+          "week": 10
+        }
+      },
+      {
+        "player_id": "8150",
+        "player_name": "Kyren Williams",
+        "position": "RB",
+        "total_points": 698.9,
+        "starts": 47,
+        "avg_ppg": 14.87,
+        "best_week": {
+          "points": 35.4,
+          "season": "2023",
+          "week": 12
+        }
+      },
+      {
+        "player_id": "5846",
+        "player_name": "DK Metcalf",
+        "position": "WR",
+        "total_points": 691.8,
+        "starts": 69,
+        "avg_ppg": 10.03,
+        "best_week": {
+          "points": 34.4,
+          "season": "2023",
+          "week": 13
+        }
+      },
+      {
+        "player_id": "7543",
+        "player_name": "Travis Etienne",
+        "position": "RB",
+        "total_points": 676.5,
+        "starts": 56,
+        "avg_ppg": 12.08,
+        "best_week": {
+          "points": 34.4,
+          "season": "2023",
+          "week": 5
+        }
+      },
+      {
+        "player_id": "8146",
+        "player_name": "Garrett Wilson",
+        "position": "WR",
+        "total_points": 493.1,
+        "starts": 50,
+        "avg_ppg": 9.86,
+        "best_week": {
+          "points": 25.5,
+          "season": "2024",
+          "week": 9
+        }
+      },
+      {
+        "player_id": "9488",
+        "player_name": "Jaxon Smith-Njigba",
+        "position": "WR",
+        "total_points": 481.0,
+        "starts": 30,
+        "avg_ppg": 16.03,
+        "best_week": {
+          "points": 33.5,
+          "season": "2024",
+          "week": 9
+        }
+      },
+      {
+        "player_id": "5022",
+        "player_name": "Dallas Goedert",
+        "position": "TE",
+        "total_points": 363.7,
+        "starts": 50,
+        "avg_ppg": 7.27,
+        "best_week": {
+          "points": 22.5,
+          "season": "2021",
+          "week": 13
+        }
+      },
+      {
+        "player_id": "5967",
+        "player_name": "Tony Pollard",
+        "position": "RB",
+        "total_points": 353.6,
+        "starts": 29,
+        "avg_ppg": 12.19,
+        "best_week": {
+          "points": 32.7,
+          "season": "2022",
+          "week": 8
+        }
+      },
+      {
+        "player_id": "11584",
+        "player_name": "Bucky Irving",
+        "position": "RB",
+        "total_points": 306.1,
+        "starts": 22,
+        "avg_ppg": 13.91,
+        "best_week": {
+          "points": 26.0,
+          "season": "2024",
+          "week": 13
+        }
+      },
+      {
+        "player_id": "5937",
+        "player_name": "Diontae Johnson",
+        "position": "WR",
+        "total_points": 240.5,
+        "starts": 27,
+        "avg_ppg": 8.91,
+        "best_week": {
+          "points": 22.5,
+          "season": "2021",
+          "week": 13
+        }
+      },
+      {
+        "player_id": "11628",
+        "player_name": "Marvin Harrison",
+        "position": "WR",
+        "total_points": 220.4,
+        "starts": 23,
+        "avg_ppg": 9.58,
+        "best_week": {
+          "points": 27.0,
+          "season": "2024",
+          "week": 2
+        }
+      },
+      {
+        "player_id": "8228",
+        "player_name": "Jaylen Warren",
+        "position": "RB",
+        "total_points": 195.6,
+        "starts": 19,
+        "avg_ppg": 10.29,
+        "best_week": {
+          "points": 17.8,
+          "season": "2025",
+          "week": 7
+        }
+      },
+      {
+        "player_id": "11539",
+        "player_name": "Jake Bates",
+        "position": "K",
+        "total_points": 194.0,
+        "starts": 22,
+        "avg_ppg": 8.82,
+        "best_week": {
+          "points": 16.0,
+          "season": "2025",
+          "week": 14
+        }
+      },
+      {
+        "player_id": "9229",
+        "player_name": "Anthony Richardson",
+        "position": "QB",
+        "total_points": 190.88,
+        "starts": 14,
+        "avg_ppg": 13.63,
+        "best_week": {
+          "points": 27.6,
+          "season": "2023",
+          "week": 4
+        }
+      }
+    ],
+    "7": [
+      {
+        "player_id": "4866",
+        "player_name": "Saquon Barkley",
+        "position": "RB",
+        "total_points": 1028.7,
+        "starts": 71,
+        "avg_ppg": 14.49,
+        "best_week": {
+          "points": 44.2,
+          "season": "2024",
+          "week": 12
+        }
+      },
+      {
+        "player_id": "5850",
+        "player_name": "Josh Jacobs",
+        "position": "RB",
+        "total_points": 1004.4,
+        "starts": 70,
+        "avg_ppg": 14.35,
+        "best_week": {
+          "points": 42.3,
+          "season": "2022",
+          "week": 12
+        }
+      },
+      {
+        "player_id": "5859",
+        "player_name": "A.J. Brown",
+        "position": "WR",
+        "total_points": 889.4,
+        "starts": 74,
+        "avg_ppg": 12.02,
+        "best_week": {
+          "points": 34.0,
+          "season": "2023",
+          "week": 4
+        }
+      },
+      {
+        "player_id": "5849",
+        "player_name": "Kyler Murray",
+        "position": "QB",
+        "total_points": 761.06,
+        "starts": 42,
+        "avg_ppg": 18.12,
+        "best_week": {
+          "points": 33.56,
+          "season": "2021",
+          "week": 1
+        }
+      },
+      {
+        "player_id": "9493",
+        "player_name": "Puka Nacua",
+        "position": "WR",
+        "total_points": 668.5,
+        "starts": 42,
+        "avg_ppg": 15.92,
+        "best_week": {
+          "points": 40.5,
+          "season": "2025",
+          "week": 16
+        }
+      },
+      {
+        "player_id": "8151",
+        "player_name": "Kenneth Walker",
+        "position": "RB",
+        "total_points": 634.0,
+        "starts": 51,
+        "avg_ppg": 12.43,
+        "best_week": {
+          "points": 31.6,
+          "season": "2024",
+          "week": 4
+        }
+      },
+      {
+        "player_id": "4981",
+        "player_name": "Calvin Ridley",
+        "position": "WR",
+        "total_points": 370.7,
+        "starts": 37,
+        "avg_ppg": 10.02,
+        "best_week": {
+          "points": 27.6,
+          "season": "2023",
+          "week": 11
+        }
+      },
+      {
+        "player_id": "2309",
+        "player_name": "Amari Cooper",
+        "position": "WR",
+        "total_points": 352.9,
+        "starts": 41,
+        "avg_ppg": 8.61,
+        "best_week": {
+          "points": 25.9,
+          "season": "2021",
+          "week": 1
+        }
+      },
+      {
+        "player_id": "11604",
+        "player_name": "Brock Bowers",
+        "position": "TE",
+        "total_points": 350.9,
+        "starts": 29,
+        "avg_ppg": 12.1,
+        "best_week": {
+          "points": 37.3,
+          "season": "2025",
+          "week": 9
+        }
+      },
+      {
+        "player_id": "1166",
+        "player_name": "Kirk Cousins",
+        "position": "QB",
+        "total_points": 340.82,
+        "starts": 21,
+        "avg_ppg": 16.23,
+        "best_week": {
+          "points": 32.4,
+          "season": "2022",
+          "week": 15
+        }
+      },
+      {
+        "player_id": "NE",
+        "player_name": "Patriots DEF",
+        "position": "DEF",
+        "total_points": 322.0,
+        "starts": 31,
+        "avg_ppg": 10.39,
+        "best_week": {
+          "points": 26.0,
+          "season": "2022",
+          "week": 9
+        }
+      },
+      {
+        "player_id": "4666",
+        "player_name": "Younghoe Koo",
+        "position": "K",
+        "total_points": 289.0,
+        "starts": 37,
+        "avg_ppg": 7.81,
+        "best_week": {
+          "points": 20.0,
+          "season": "2024",
+          "week": 4
+        }
+      },
+      {
+        "player_id": "4892",
+        "player_name": "Baker Mayfield",
+        "position": "QB",
+        "total_points": 269.9,
+        "starts": 16,
+        "avg_ppg": 16.87,
+        "best_week": {
+          "points": 27.0,
+          "season": "2024",
+          "week": 7
+        }
+      },
+      {
+        "player_id": "DEN",
+        "player_name": "Broncos DEF",
+        "position": "DEF",
+        "total_points": 261.0,
+        "starts": 24,
+        "avg_ppg": 10.88,
+        "best_week": {
+          "points": 21.0,
+          "season": "2025",
+          "week": 18
+        }
+      },
+      {
+        "player_id": "7090",
+        "player_name": "Darnell Mooney",
+        "position": "WR",
+        "total_points": 223.5,
+        "starts": 24,
+        "avg_ppg": 9.31,
+        "best_week": {
+          "points": 27.0,
+          "season": "2024",
+          "week": 5
+        }
+      }
+    ],
+    "8": [
+      {
+        "player_id": "6813",
+        "player_name": "Jonathan Taylor",
+        "position": "RB",
+        "total_points": 1086.9,
+        "starts": 62,
+        "avg_ppg": 17.53,
+        "best_week": {
+          "points": 50.4,
+          "season": "2021",
+          "week": 11
+        }
+      },
+      {
+        "player_id": "2133",
+        "player_name": "Davante Adams",
+        "position": "WR",
+        "total_points": 978.4,
+        "starts": 73,
+        "avg_ppg": 13.4,
+        "best_week": {
+          "points": 38.3,
+          "season": "2024",
+          "week": 15
+        }
+      },
+      {
+        "player_id": "5872",
+        "player_name": "Deebo Samuel",
+        "position": "WR",
+        "total_points": 728.3,
+        "starts": 68,
+        "avg_ppg": 10.71,
+        "best_week": {
+          "points": 33.8,
+          "season": "2023",
+          "week": 13
+        }
+      },
+      {
+        "player_id": "4199",
+        "player_name": "Aaron Jones",
+        "position": "RB",
+        "total_points": 694.8,
+        "starts": 65,
+        "avg_ppg": 10.69,
+        "best_week": {
+          "points": 35.5,
+          "season": "2021",
+          "week": 2
+        }
+      },
+      {
+        "player_id": "4983",
+        "player_name": "DJ Moore",
+        "position": "WR",
+        "total_points": 669.08,
+        "starts": 63,
+        "avg_ppg": 10.62,
+        "best_week": {
+          "points": 45.0,
+          "season": "2023",
+          "week": 5
+        }
+      },
+      {
+        "player_id": "6768",
+        "player_name": "Tua Tagovailoa",
+        "position": "QB",
+        "total_points": 596.78,
+        "starts": 38,
+        "avg_ppg": 15.7,
+        "best_week": {
+          "points": 29.18,
+          "season": "2022",
+          "week": 8
+        }
+      },
+      {
+        "player_id": "5012",
+        "player_name": "Mark Andrews",
+        "position": "TE",
+        "total_points": 550.5,
+        "starts": 64,
+        "avg_ppg": 8.6,
+        "best_week": {
+          "points": 30.7,
+          "season": "2021",
+          "week": 5
+        }
+      },
+      {
+        "player_id": "1264",
+        "player_name": "Justin Tucker",
+        "position": "K",
+        "total_points": 423.0,
+        "starts": 49,
+        "avg_ppg": 8.63,
+        "best_week": {
+          "points": 17.0,
+          "season": "2021",
+          "week": 3
+        }
+      },
+      {
+        "player_id": "8154",
+        "player_name": "Brian Robinson",
+        "position": "RB",
+        "total_points": 354.2,
+        "starts": 35,
+        "avg_ppg": 10.12,
+        "best_week": {
+          "points": 27.9,
+          "season": "2023",
+          "week": 2
+        }
+      },
+      {
+        "player_id": "11560",
+        "player_name": "Caleb Williams",
+        "position": "QB",
+        "total_points": 281.02,
+        "starts": 16,
+        "avg_ppg": 17.56,
+        "best_week": {
+          "points": 37.7,
+          "season": "2025",
+          "week": 9
+        }
+      },
+      {
+        "player_id": "10229",
+        "player_name": "Rashee Rice",
+        "position": "WR",
+        "total_points": 277.5,
+        "starts": 26,
+        "avg_ppg": 10.67,
+        "best_week": {
+          "points": 24.4,
+          "season": "2025",
+          "week": 13
+        }
+      },
+      {
+        "player_id": "KC",
+        "player_name": "Chiefs DEF",
+        "position": "DEF",
+        "total_points": 268.0,
+        "starts": 32,
+        "avg_ppg": 8.38,
+        "best_week": {
+          "points": 17.0,
+          "season": "2023",
+          "week": 18
+        }
+      },
+      {
+        "player_id": "1373",
+        "player_name": "Geno Smith",
+        "position": "QB",
+        "total_points": 267.62,
+        "starts": 16,
+        "avg_ppg": 16.73,
+        "best_week": {
+          "points": 24.06,
+          "season": "2023",
+          "week": 10
+        }
+      },
+      {
+        "player_id": "7839",
+        "player_name": "Evan McPherson",
+        "position": "K",
+        "total_points": 236.0,
+        "starts": 31,
+        "avg_ppg": 7.61,
+        "best_week": {
+          "points": 23.0,
+          "season": "2025",
+          "week": 13
+        }
+      },
+      {
+        "player_id": "8167",
+        "player_name": "Christian Watson",
+        "position": "WR",
+        "total_points": 224.8,
+        "starts": 24,
+        "avg_ppg": 9.37,
+        "best_week": {
+          "points": 24.1,
+          "season": "2023",
+          "week": 13
+        }
+      }
+    ],
+    "9": [
+      {
+        "player_id": "6770",
+        "player_name": "Joe Burrow",
+        "position": "QB",
+        "total_points": 917.42,
+        "starts": 47,
+        "avg_ppg": 19.52,
+        "best_week": {
+          "points": 39.24,
+          "season": "2022",
+          "week": 7
+        }
+      },
+      {
+        "player_id": "2216",
+        "player_name": "Mike Evans",
+        "position": "WR",
+        "total_points": 788.8,
+        "starts": 66,
+        "avg_ppg": 11.95,
+        "best_week": {
+          "points": 38.7,
+          "season": "2022",
+          "week": 17
+        }
+      },
+      {
+        "player_id": "4035",
+        "player_name": "Alvin Kamara",
+        "position": "RB",
+        "total_points": 786.7,
+        "starts": 62,
+        "avg_ppg": 12.69,
+        "best_week": {
+          "points": 43.0,
+          "season": "2024",
+          "week": 2
+        }
+      },
+      {
+        "player_id": "2449",
+        "player_name": "Stefon Diggs",
+        "position": "WR",
+        "total_points": 773.62,
+        "starts": 67,
+        "avg_ppg": 11.55,
+        "best_week": {
+          "points": 33.0,
+          "season": "2023",
+          "week": 4
+        }
+      },
+      {
+        "player_id": "7525",
+        "player_name": "DeVonta Smith",
+        "position": "WR",
+        "total_points": 555.6,
+        "starts": 61,
+        "avg_ppg": 9.11,
+        "best_week": {
+          "points": 23.3,
+          "season": "2022",
+          "week": 16
+        }
+      },
+      {
+        "player_id": "5095",
+        "player_name": "Daniel Carlson",
+        "position": "K",
+        "total_points": 555.0,
+        "starts": 69,
+        "avg_ppg": 8.04,
+        "best_week": {
+          "points": 19.0,
+          "season": "2021",
+          "week": 12
+        }
+      },
+      {
+        "player_id": "8112",
+        "player_name": "Drake London",
+        "position": "WR",
+        "total_points": 487.6,
+        "starts": 41,
+        "avg_ppg": 11.89,
+        "best_week": {
+          "points": 35.7,
+          "season": "2024",
+          "week": 18
+        }
+      },
+      {
+        "player_id": "7553",
+        "player_name": "Kyle Pitts",
+        "position": "TE",
+        "total_points": 416.5,
+        "starts": 55,
+        "avg_ppg": 7.57,
+        "best_week": {
+          "points": 40.1,
+          "season": "2025",
+          "week": 15
+        }
+      },
+      {
+        "player_id": "8205",
+        "player_name": "Isiah Pacheco",
+        "position": "RB",
+        "total_points": 352.9,
+        "starts": 36,
+        "avg_ppg": 9.8,
+        "best_week": {
+          "points": 26.0,
+          "season": "2023",
+          "week": 17
+        }
+      },
+      {
+        "player_id": "1689",
+        "player_name": "Adam Thielen",
+        "position": "WR",
+        "total_points": 352.3,
+        "starts": 32,
+        "avg_ppg": 11.01,
+        "best_week": {
+          "points": 25.5,
+          "season": "2024",
+          "week": 17
+        }
+      },
+      {
+        "player_id": "11631",
+        "player_name": "Brian Thomas",
+        "position": "WR",
+        "total_points": 322.5,
+        "starts": 26,
+        "avg_ppg": 12.4,
+        "best_week": {
+          "points": 27.5,
+          "season": "2024",
+          "week": 15
+        }
+      },
+      {
+        "player_id": "CLE",
+        "player_name": "Browns DEF",
+        "position": "DEF",
+        "total_points": 273.0,
+        "starts": 34,
+        "avg_ppg": 8.03,
+        "best_week": {
+          "points": 24.0,
+          "season": "2023",
+          "week": 9
+        }
+      },
+      {
+        "player_id": "7049",
+        "player_name": "Jauan Jennings",
+        "position": "WR",
+        "total_points": 255.2,
+        "starts": 20,
+        "avg_ppg": 12.76,
+        "best_week": {
+          "points": 41.0,
+          "season": "2024",
+          "week": 3
+        }
+      },
+      {
+        "player_id": "12527",
+        "player_name": "Ashton Jeanty",
+        "position": "RB",
+        "total_points": 216.6,
+        "starts": 17,
+        "avg_ppg": 12.74,
+        "best_week": {
+          "points": 32.5,
+          "season": "2025",
+          "week": 4
+        }
+      },
+      {
+        "player_id": "6130",
+        "player_name": "Devin Singletary",
+        "position": "RB",
+        "total_points": 208.3,
+        "starts": 24,
+        "avg_ppg": 8.68,
+        "best_week": {
+          "points": 22.6,
+          "season": "2023",
+          "week": 10
+        }
+      }
+    ],
+    "10": [
+      {
+        "player_id": "6797",
+        "player_name": "Justin Herbert",
+        "position": "QB",
+        "total_points": 1015.36,
+        "starts": 55,
+        "avg_ppg": 18.46,
+        "best_week": {
+          "points": 42.82,
+          "season": "2021",
+          "week": 5
+        }
+      },
+      {
+        "player_id": "4663",
+        "player_name": "Austin Ekeler",
+        "position": "RB",
+        "total_points": 686.4,
+        "starts": 50,
+        "avg_ppg": 13.73,
+        "best_week": {
+          "points": 35.5,
+          "season": "2021",
+          "week": 11
+        }
+      },
+      {
+        "player_id": "4137",
+        "player_name": "James Conner",
+        "position": "RB",
+        "total_points": 649.7,
+        "starts": 48,
+        "avg_ppg": 13.54,
+        "best_week": {
+          "points": 34.3,
+          "season": "2021",
+          "week": 9
+        }
+      },
+      {
+        "player_id": "7526",
+        "player_name": "Jaylen Waddle",
+        "position": "WR",
+        "total_points": 607.12,
+        "starts": 66,
+        "avg_ppg": 9.2,
+        "best_week": {
+          "points": 29.1,
+          "season": "2022",
+          "week": 2
+        }
+      },
+      {
+        "player_id": "8130",
+        "player_name": "Trey McBride",
+        "position": "TE",
+        "total_points": 516.7,
+        "starts": 41,
+        "avg_ppg": 12.6,
+        "best_week": {
+          "points": 31.4,
+          "season": "2025",
+          "week": 15
+        }
+      },
+      {
+        "player_id": "BUF",
+        "player_name": "Bills DEF",
+        "position": "DEF",
+        "total_points": 516.0,
+        "starts": 60,
+        "avg_ppg": 8.6,
+        "best_week": {
+          "points": 33.0,
+          "season": "2023",
+          "week": 3
+        }
+      },
+      {
+        "player_id": "6819",
+        "player_name": "Michael Pittman",
+        "position": "WR",
+        "total_points": 509.3,
+        "starts": 50,
+        "avg_ppg": 10.19,
+        "best_week": {
+          "points": 22.0,
+          "season": "2023",
+          "week": 13
+        }
+      },
+      {
+        "player_id": "4988",
+        "player_name": "Nick Chubb",
+        "position": "RB",
+        "total_points": 484.5,
+        "starts": 38,
+        "avg_ppg": 12.75,
+        "best_week": {
+          "points": 29.3,
+          "season": "2022",
+          "week": 2
+        }
+      },
+      {
+        "player_id": "6803",
+        "player_name": "Brandon Aiyuk",
+        "position": "WR",
+        "total_points": 375.4,
+        "starts": 41,
+        "avg_ppg": 9.16,
+        "best_week": {
+          "points": 28.9,
+          "season": "2023",
+          "week": 1
+        }
+      },
+      {
+        "player_id": "8259",
+        "player_name": "Cameron Dicker",
+        "position": "K",
+        "total_points": 362.0,
+        "starts": 41,
+        "avg_ppg": 8.83,
+        "best_week": {
+          "points": 20.0,
+          "season": "2023",
+          "week": 16
+        }
+      },
+      {
+        "player_id": "6804",
+        "player_name": "Jordan Love",
+        "position": "QB",
+        "total_points": 356.12,
+        "starts": 26,
+        "avg_ppg": 13.7,
+        "best_week": {
+          "points": 28.44,
+          "season": "2023",
+          "week": 17
+        }
+      },
+      {
+        "player_id": "9756",
+        "player_name": "Jordan Addison",
+        "position": "WR",
+        "total_points": 346.2,
+        "starts": 37,
+        "avg_ppg": 9.36,
+        "best_week": {
+          "points": 35.3,
+          "season": "2024",
+          "week": 14
+        }
+      },
+      {
+        "player_id": "6806",
+        "player_name": "J.K. Dobbins",
+        "position": "RB",
+        "total_points": 285.2,
+        "starts": 27,
+        "avg_ppg": 10.56,
+        "best_week": {
+          "points": 23.5,
+          "season": "2024",
+          "week": 9
+        }
+      },
+      {
+        "player_id": "7021",
+        "player_name": "Rico Dowdle",
+        "position": "RB",
+        "total_points": 272.9,
+        "starts": 23,
+        "avg_ppg": 11.87,
+        "best_week": {
+          "points": 30.9,
+          "season": "2025",
+          "week": 6
+        }
+      },
+      {
+        "player_id": "11632",
+        "player_name": "Malik Nabers",
+        "position": "WR",
+        "total_points": 266.2,
+        "starts": 19,
+        "avg_ppg": 14.01,
+        "best_week": {
+          "points": 33.2,
+          "season": "2025",
+          "week": 2
+        }
+      }
+    ]
   }
 }
